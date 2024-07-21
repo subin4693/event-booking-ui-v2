@@ -232,13 +232,13 @@ const CreateEvents = () => {
     }, []);
 
     return (
-        <div>
+        <div className="min-h-screen flex flex-col justify-between">
             <Topbar
                 services={services}
                 setSelectedService={setSelectedService}
             />
 
-            <div>
+            <div className="flex-grow">
                 <ServiceCardContainer
                     servicesList={servicesList}
                     handleBookings={handleBookings}
@@ -246,8 +246,8 @@ const CreateEvents = () => {
                 />
             </div>
             {bookings?.length > 0 && (
-                <div className="fixed bottom-10 left-1/2 transform -translate-x-1/2 z-10">
-                    <Button className="px-4 py-2   text-white rounded">
+                <div className="sticky bottom-0 flex justify-center backdrop-blur  z-50 p-4">
+                    <Button className="px-4 py-2 text-white rounded">
                         {bookings.length} Book now
                     </Button>
                 </div>

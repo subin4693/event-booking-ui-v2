@@ -46,13 +46,13 @@ const Signup = () => {
                 alert("Password dosen't match");
                 return;
             }
-            // const res = await axios.post(
-            //     BASE_URL + "/users/signup",
-            //     { name, email, password },
-            //     {
-            //         withCredentials: true,
-            //     }
-            // );
+            const res = await axios.post(
+                BASE_URL + "/users/signup",
+                { name, email, password },
+                {
+                    withCredentials: true,
+                }
+            );
 
             if (res.data.status !== "success") {
                 console.log(res);
