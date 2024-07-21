@@ -2,11 +2,17 @@ import React, { useEffect, useState } from "react";
 import Topbar from "./Topbar";
 import ServiceCardContainer from "./ServiceCardContainer";
 import { Button } from "@/components/ui/button";
+import EventTitle from "./EventTitle";
 
 const CreateEvents = () => {
     const [services, setServices] = useState();
     const [selectedService, setSelectedService] = useState(null);
     const [bookings, setBookings] = useState([]);
+    const [showTitleField, setShowTitleField] = useState(true);
+    const [title, setTitle] = useState("");
+    const [description, setDescription] = useState("");
+    const [image, setImage] = useState(null);
+
     const [servicesList, setServicesList] = useState([
         {
             _id: "sdafa",
@@ -232,7 +238,18 @@ const CreateEvents = () => {
     }, []);
 
     return (
-        <div className="min-h-screen flex flex-col justify-between">
+        <div className="min-h-screen flex flex-col justify-between ">
+            {showTitleField && (
+                <EventTitle
+                    setShowTitleField={setShowTitleField}
+                    title={title}
+                    setTitle={setTitle}
+                    description={description}
+                    setDescription={setDescription}
+                    image={image}
+                    setImage={setImage}
+                />
+            )}
             <Topbar
                 services={services}
                 setSelectedService={setSelectedService}

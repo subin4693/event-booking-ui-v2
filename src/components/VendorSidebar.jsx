@@ -1,7 +1,7 @@
 import React from "react";
 import { Button } from "./ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import {
     Calendar,
     DoorClosed,
@@ -9,8 +9,24 @@ import {
     Settings,
     User,
 } from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
 
-const UserSidebar = () => {
+import { setUser } from "../features/userSlice";
+import { clearItems } from "../features/itemSlice";
+import { setClient } from "../features/clientSlice";
+
+const VendorSidebar = () => {
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+
+    const { user } = useSelector((state) => state.user);
+
+    const handleSignout = () => {
+        dispatch(setUser({}));
+        dispatch(setClient({}));
+        dispatch(clearItems());
+        navigate("/");
+    };
     return (
         <div className="sticky p-1 sm:p-5  md:px-10 left-0 top-0 bg-muted h-screen border z-10">
             <h1 className="font-bold text-lg sm:text-2xl">
@@ -24,9 +40,9 @@ const UserSidebar = () => {
                             <AvatarFallback>CN</AvatarFallback>
                         </Avatar>
                         <div className="hidden sm:inline">
-                            <h3 className="font-bold">name</h3>
-                            <h2 className="">email@gmail.com</h2>
-                            <h2>Role - Clientr</h2>
+                            <h3 className="font-bold">{user?.name}</h3>
+                            <h2 className="">{user?.email}</h2>
+                            <h2>Role - {user?.role}</h2>
                         </div>
 
                         <br />
@@ -90,10 +106,13 @@ const UserSidebar = () => {
                 </div>
             </div>
             <div className="flex justify-center">
-                <Button className="hidden sm:inline">Sign out</Button>
+                <Button className="hidden sm:inline" onClick={handleSignout}>
+                    Sign out
+                </Button>
                 <Button
                     className="inline sm:hidden flex items-center justify-center"
                     size="icon"
+                    onClick={handleSignout}
                 >
                     <DoorClosed />
                 </Button>
@@ -102,4 +121,4 @@ const UserSidebar = () => {
     );
 };
 
-export default UserSidebar;
+export default VendorSidebar;

@@ -1,10 +1,57 @@
 import { Button } from "@/components/ui/button";
-import React from "react";
+import React, { useEffect } from "react";
 import EventBox from "./EventBox";
 import ServiceCard from "./ServiceCard";
-import { Link } from "react-router-dom";
-
+import { Link, useNavigate } from "react-router-dom";
+import { addItem, clearItems, deleteItem } from "@/features/itemSlice";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+import { useToast } from "@/components/ui/use-toast";
 const Dashboard = () => {
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const BASE_URL = import.meta.env.VITE_BASE_URL;
+    const { client } = useSelector((state) => state.client);
+    const { items } = useSelector((state) => state.item);
+    const { toast } = useToast();
+
+    const handleDelete = async (id) => {
+        await axios
+            .delete(`${BASE_URL}/items/delete/${id}`)
+            .then((res) => {
+                toast({
+                    title: "Deleted successfull",
+                });
+                dispatch(deleteItem(id));
+            })
+            .catch((err) => {
+                toast({
+                    variant: "destructive",
+                    title: "Something wrong please try again later",
+                });
+                console.log(err);
+            });
+    };
+    useEffect(() => {
+        const getItems = async () => {
+            // console.log(user.id);
+            await axios
+                .get(BASE_URL + "/items/user/" + client._id)
+                .then((res) => {
+                    const data = res.data.items;
+
+                    dispatch(clearItems());
+                    data.map((d) => {
+                        d.item.images = d.image;
+
+                        dispatch(addItem(d.item));
+                    });
+                })
+                .catch((err) => console.log(err));
+        };
+        getItems();
+    }, []);
+
     return (
         <div>
             <div className="flex justify-between items-center">
@@ -63,31 +110,19 @@ const Dashboard = () => {
                 <h2 className="text-2xl font-bold">Service Details</h2>
                 <br />
                 <div className="flex flex-wrap justify-center gap-5">
-                    <ServiceCard
-                        name={"Venue"}
-                        description={"description asdfas"}
-                        contact={"23432423"}
-                        locatoin={"lcoaidsfasi"}
-                    />
-
-                    <ServiceCard
-                        name={"Venue"}
-                        description={"description asdfas"}
-                        contact={"23432423"}
-                        locatoin={"lcoaidsfasi"}
-                    />
-                    <ServiceCard
-                        name={"Venue"}
-                        description={"description asdfas"}
-                        contact={"23432423"}
-                        locatoin={"lcoaidsfasi"}
-                    />
-                    <ServiceCard
-                        name={"Venue"}
-                        description={"description asdfas"}
-                        contact={"23432423"}
-                        location={"lcoaidsfasi"}
-                    />
+                    {items &&
+                        items?.map((singleItem) => (
+                            <ServiceCard
+                                key={singleItem?._id}
+                                id={singleItem?._id}
+                                name={singleItem?.name}
+                                description={singleItem?.description}
+                                contact={singleItem?.contactInfo}
+                                price={singleItem?.price}
+                                image={singleItem?.images[0].data}
+                                handleDelete={handleDelete}
+                            />
+                        ))}
                 </div>
             </div>
         </div>

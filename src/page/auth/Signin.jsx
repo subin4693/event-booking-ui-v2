@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 // import MailOutlinedIcon from "@mui/icons-material/MailOutlined";
-import { Mail, User } from "lucide-react";
+import { Loader2, Mail, User } from "lucide-react";
 
 import TextInputBox from "./TextInputBox";
 import PasswordInputBox from "./PasswordInputBox";
@@ -14,49 +14,69 @@ import fbLogo from "../../assets/fb.png";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-// import { useDispatch, useSelector } from "react-redux";
-// import { setUser } from "../../features/userSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { setUser } from "../../features/userSlice";
+import { useToast } from "@/components/ui/use-toast";
+import { ToastAction } from "@radix-ui/react-toast";
 
 const Signin = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [isLoading, setLoading] = useState(false);
     const [role, setRole] = useState("user");
-    // const dispatch = useDispatch();
-    // const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
     const BASE_URL = import.meta.env.VITE_BASE_URL;
 
-    const label = { inputProps: { "aria-label": "Switch demo" } };
+    const { toast } = useToast();
 
     const handleSignin = async () => {
-        // try {
-        //     if (email.trim().length === 0 || password.trim().length === 0) {
-        //         alert("Enter valid credentials");
-        //         return;
-        //     }
-        //     if (password.trim().length < 8) {
-        //         alert("Password length must be greater than 8");
-        //         return;
-        //     }
-        //     const res = await axios.post(BASE_URL + "/login", {
-        //         email,
-        //         password,
-        //         role,
-        //     });
-        //     if (res.data.data.role.toLowerCase() !== role.toLowerCase()) {
-        //         alert("There is no user found in " + role);
-        //         return;
-        //     }
-        //     dispatch(setUser(res.data.data));
-        //     if (role.toLowerCase() == "user") {
-        //         navigate("/user/events");
-        //     } else {
-        //         navigate("/client/");
-        //     }
-        // } catch (error) {
-        //     console.log("Error occured");
-        //     alert("Something wrong please try again later");
-        //     console.log(error);
-        // }
+        try {
+            setLoading(true);
+            if (email.trim().length === 0 || password.trim().length === 0) {
+                toast({
+                    variant: "destructive",
+                    description: "Enter valid credentials",
+                });
+                return;
+            }
+            if (password.trim().length < 8) {
+                toast({
+                    variant: "destructive",
+                    description: "Password length must be greater than 8",
+                });
+
+                return;
+            }
+
+            const res = await axios.post(BASE_URL + "/login", {
+                email,
+                password,
+                role,
+            });
+
+            if (res.data.data.role.toLowerCase() !== role.toLowerCase()) {
+                toast({
+                    variant: "destructive",
+                    description: "There is no user found in " + role,
+                });
+                return;
+            }
+            dispatch(setUser(res.data.data));
+            if (role.toLowerCase() == "user") {
+                navigate("/users/dashboard");
+            } else {
+                navigate("/vendor");
+            }
+        } catch (error) {
+            toast({
+                variant: "destructive",
+                title: "Uh oh! Something went wrong.",
+            });
+            console.log(error);
+        } finally {
+            setLoading(false);
+        }
     };
     const handleAuthWithGoogle = () => {};
     const handleAuthWithFacebook = () => {};
@@ -96,13 +116,7 @@ const Signin = () => {
                         />
                     </div>
                     <br />
-                    {/* <div className="flex justify-between items-center">
-                        <div className="flex   items-center ">
-                            <Switch {...label} color="primary" />
-                            Remember me
-                        </div>
-                        <Link to="#">Forget Password?</Link>
-                    </div> */}
+
                     <br />
 
                     <div className="flex items-center flex-col">
@@ -110,7 +124,11 @@ const Signin = () => {
                             onClick={handleSignin}
                             className={"max-w-fit px-20 mx-auto mb-8 "}
                         >
-                            {"SIGN IN"}
+                            {isLoading ? (
+                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            ) : (
+                                "SIGN IN"
+                            )}
                         </Button>
 
                         <p className="text-gray-600 mb-4">OR</p>

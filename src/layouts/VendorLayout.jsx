@@ -11,7 +11,7 @@ function VendorLayout() {
 
             <div className="w-full   flex flex-col">
                 <Navbar person={"Vendor"} />
-                <div className="flex-grow p-20">
+                <div className="flex-grow p-5 sm:p-10 md:20">
                     <Outlet />
                 </div>
                 <Footer />

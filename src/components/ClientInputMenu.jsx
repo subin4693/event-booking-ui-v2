@@ -15,7 +15,7 @@ const ClientInputMenu = ({ value, setValue, title, placeholder }) => {
                 <ul className="bg-input rounded-[25px] p-5 mt-5">
                     {value &&
                         value.map((val, index) => (
-                            <li>{index + 1 + " " + val}</li>
+                            <li key={index}>{index + 1 + " " + val}</li>
                         ))}
                 </ul>
             )}

@@ -21,11 +21,13 @@ import BookEvents from "./page/users/Book-Events";
 import CreateEvents from "./page/users/Create-Events";
 import Signup from "./page/auth/Signup";
 import Signin from "./page/auth/Signin";
+import { Toaster } from "@/components/ui/toaster";
 
 const App = () => {
     return (
         <div>
             <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+                <Toaster />
                 <Router>
                     <Routes>
                         <Route path="/" element={<Signin />} />

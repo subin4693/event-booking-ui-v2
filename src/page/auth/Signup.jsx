@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-// import MailOutlinedIcon from "@mui/icons-material/MailOutlined";
+
 import TextInputBox from "./TextInputBox";
 import SelectInputBox from "./SelectInputBox";
 import PasswordInputBox from "./PasswordInputBox";
@@ -8,68 +8,79 @@ import { Link } from "react-router-dom";
 import SocialmediaAuthBtn from "./SocialmediaAuthBtn";
 import googlelogo from "../../assets/googleLogo.webp";
 import fbLogo from "../../assets/fb.png";
-// import Person2OutlinedIcon from "@mui/icons-material/Person2Outlined";
+
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Mail, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
-// import { useDispatch } from "react-redux";
-// import { setUser } from "../../features/userSlice";
+import { useDispatch } from "react-redux";
+import { setUser } from "../../features/userSlice";
+import { useToast } from "@/components/ui/use-toast";
 
 const Signup = () => {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+    const [isLoading, setLoading] = useState(false);
     const [role, setRole] = useState("user");
-    // const navigate = useNavigate();
-    // const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
     const BASE_URL = import.meta.env.VITE_BASE_URL;
-
-    const label = { inputProps: { "aria-label": "Switch demo" } };
+    const { toast } = useToast();
 
     const handleSignup = async () => {
         try {
+            setLoading(true);
             if (
                 name.trim().length === 0 ||
                 email.trim().length === 0 ||
                 password.trim().length === 0
             ) {
-                alert("Enter valid credentials");
+                toast({
+                    variant: "destructive",
+                    description: "There was a problem.",
+                });
+
                 return;
             }
             if (password.trim().length < 8) {
-                alert("Password length must be greater than 8");
+                toast({
+                    variant: "destrictive",
+                    description: "Enter valid password length should be < 7 ",
+                });
+
                 return;
             }
             if (password !== confirmPassword) {
-                alert("Password dosen't match");
+                toast({
+                    variant: "destrictive",
+                    description: "Password did not match",
+                });
                 return;
             }
-            const res = await axios.post(
-                BASE_URL + "/users/signup",
-                { name, email, password },
-                {
-                    withCredentials: true,
-                }
-            );
 
-            if (res.data.status !== "success") {
-                console.log(res);
-                throw new Error(res.message);
-            }
+            const res = await axios.post(BASE_URL + "/user", {
+                name: name,
+                email,
+                password: password,
+                role,
+            });
 
-            console.log(res.data);
-            console.log(res.data.data);
-            // dispatch(setUser(res.data.data));
-            // if (role.toLowerCase() === "user") navigate("/user/events");
-            // else navigate("/client");
+            dispatch(setUser(res.data.data));
+            if (role.toLowerCase() === "user") navigate("/user/events");
+            else navigate("/vendor");
         } catch (error) {
-            console.log("Error occured");
+            toast({
+                variant: "destructive",
+                title: "Uh oh! Something went wrong.",
+            });
+
             console.log(error);
+        } finally {
+            setLoading(false);
         }
     };
-
     const handleAuthWithGoogle = () => {};
     const handleAuthWithFacebook = () => {};
 
@@ -121,7 +132,11 @@ const Signup = () => {
                             onClick={handleSignup}
                             className={"max-w-fit px-20 mx-auto mb-8 "}
                         >
-                            {"SIGN UP"}
+                            {isLoading ? (
+                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            ) : (
+                                "SIGN IN"
+                            )}
                         </Button>
                         <p className="text-gray-600 mb-4">OR</p>
 

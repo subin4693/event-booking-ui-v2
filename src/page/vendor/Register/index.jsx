@@ -1,108 +1,126 @@
 import React, { useEffect, useState } from "react";
-// import { useSelector, useDispatch } from "react-redux";
+
 import ClientInput from "@/components/ClientInput";
 import ClientInputSelect from "@/components/ClientInputSelect";
 import ClientTextArea from "@/components/ClientTextArea";
 import { Button } from "@/components/ui/button";
 import ClientInputImage from "@/components/ClientInputImage";
-import { Calendar } from "@/components/ui/calendar";
+import { v4 as uuidv4 } from "uuid";
 
-// import axios from "axios";
-// import { addItem } from "../../features/itemSlice";
+import axios from "axios";
+
 import { useNavigate } from "react-router-dom";
 import { DatePickerWithRange } from "@/components/DatePicker";
+import { useDispatch, useSelector } from "react-redux";
+import { useToast } from "@/components/ui/use-toast";
+import { Loader2, Loader2Icon } from "lucide-react";
+import { addItem } from "@/features/itemSlice";
 
 const Register = () => {
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
     const [experience, setExperience] = useState("");
-    const [contact, setContact] = useState("");
     const [role, setRole] = useState("");
-    const [location, setLocation] = useState("");
-
-    const [description, setDescription] = useState("");
-    const [contactInfo, setContactInfo] = useState("");
-    const [price, setPrice] = useState(0);
+    const [contact, setContact] = useState("");
+    const [qid, setQid] = useState("");
+    const [crno, setCrno] = useState("");
     const [image, setImage] = useState(null);
+    const [description, setDescription] = useState("");
+    const [options, setOptions] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
+
+    const [date, setDate] = useState(new Date());
+    const [tempDate, setTempDate] = useState(new Date());
 
     const BASE_URL = import.meta.env.VITE_BASE_URL;
 
-    // const { client } = useSelector((state) => state.client);
+    const { user } = useSelector((state) => state.user);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
-    // const { user } = useSelector((state) => state.user);
-    // const dispatch = useDispatch();
-    // const navigate = useNavigate();
+    const { toast } = useToast();
 
     const handleSubmit = async () => {
-        // console.log("*************7777777777777777777**********");
-        // console.log(portfolio);
-        // const data = new FormData();
-        // data.append("images", image[0]);
-        // data.append("typeId", role?._id);
-        // data.append("clientId", client._id);
-        // data.append("name", name);
-        // data.append("description", description);
-        // data.append("contactInfo", contactInfo);
-        // data.append("price", price);
-        // data.append("dates", client.availability);
-        // if (role?.type === "Catering") {
-        //     data.append("menuOptions", menuOptions);
-        // } else if (role?.type === "Venue") {
-        //     data.append("location", location);
-        //     data.append("capacity", capacity);
-        // } else if (role?.type === "Photography") {
-        //     data.append("portfolio", portfolio);
-        // } else if (role?.type === "Decoration") {
-        //     decorationImages.forEach((image) =>
-        //         data.append("decorationImages", image)
-        //     );
-        // }
-        // console.log(data);
-        // try {
-        //     await axios
-        //         .post(BASE_URL + "/items/create", data, {
-        //             headers: {
-        //                 "Content-Type": "multipart/form-data",
-        //             },
-        //         })
-        //         .then((res) => {
-        //             dispatch(addItem(res.data.newItem));
-        //             console.log(res.data);
-        //             navigate("/client/dashboard");
-        //         })
-        //         .catch((err) => console.log(err));
-        // } catch (error) {
-        //     console.error(error);
-        // }
+        if (!image || image.length === 0) {
+            toast({
+                description: "There is no image provided",
+                variant: "destructive",
+            });
+
+            return;
+        }
+
+        const file = image[0];
+        const extension = file.name.split(".").pop();
+        const newName = `${uuidv4()}.${extension}`;
+
+        const newImage = new File([file], newName, { type: file.type });
+
+        const data = new FormData();
+        data.append("firstName", firstName);
+        data.append("lastName", lastName);
+        data.append("email", email);
+        data.append("userId", user.id);
+        data.append("role", role);
+        data.append("workExperience", experience);
+        data.append("location", location);
+        data.append("contact", contact);
+        data.append("qId", qid);
+        data.append("crNo", crno);
+        data.append("bestWork", newImage);
+        data.append("description", description);
+
+        date.forEach((d) => data.append("availability[]", d));
+
+        try {
+            setIsLoading(true);
+            const response = await axios.post(`${BASE_URL}/client`, data, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            });
+            dispatch(addItem(response.data.newItem));
+
+            navigate("/vendor/dashboard");
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setIsLoading(false);
+        }
     };
+    useEffect(() => {
+        if (!tempDate.from || !tempDate.to) {
+            return;
+        }
+
+        const fromDate = new Date(tempDate.from);
+        const toDate = new Date(tempDate.to);
+
+        function formatUTCISO(date) {
+            return date.toISOString().split(".")[0] + "Z";
+        }
+
+        const dates = [];
+        for (
+            let dt = new Date(fromDate);
+            dt <= toDate;
+            dt.setDate(dt.getDate() + 1)
+        ) {
+            dates.push(formatUTCISO(new Date(dt)));
+        }
+
+        setDate(dates);
+    }, [tempDate]);
 
     useEffect(() => {
-        // console.log(client?.role?.type);
-        // setRole(client?.role);
-        // const getTypes = async () => {
-        //   try {
-        //     const res = await axios.get(BASE_URL + "/types");
-        //     // console.log(res.data.types[0]);
-        //     // console.log(client.role);
-        //     const   = res.data.types.filter((type) => {
-        //       console.log(type.type);
-        //       console.log(client.role.type);
-        //       return type.type.toLowerCase === client.role.type.toLowerCase;
-        //     });
-        //     console.log( );
-        //     setRole( [0].type);
-        //   } catch (error) {
-        //     console.log(error);
-        //   }
-        // };
-        // getTypes();
+        const getTypes = async () => {
+            const res = await axios.get(BASE_URL + "/types");
+
+            setOptions(res.data.types);
+        };
+        getTypes();
     }, []);
-    // <ClientTextArea
-    //                     title={"Description"}
-    //                     value={description}
-    //                     setValue={setDescription}
-    //                 />
 
     return (
         <div className="  bg-card text-foreground   flex flex-col justify-center items-center ">
@@ -137,6 +155,7 @@ const Register = () => {
                     <br />
                     {/* select */}
                     <ClientInputSelect
+                        options={options}
                         title={"Role"}
                         value={role}
                         setValue={setRole}
@@ -150,13 +169,14 @@ const Register = () => {
                         setValue={setExperience}
                     />
                     {/* select */}
-                    <br />
+                    {/* <br />
                     <br />
                     <ClientInputSelect
+                     options={["User","Vendor"]}
                         title={"Location"}
                         value={location}
                         setValue={setLocation}
-                    />
+                    /> */}
                     <br />
                     <br />
                     <ClientInput
@@ -165,21 +185,22 @@ const Register = () => {
                         value={contact}
                         setValue={setContact}
                     />
+                    <br />
+                    <br />
+                    <ClientInput
+                        title={"QID"}
+                        type={"text"}
+                        value={qid}
+                        setValue={setQid}
+                    />
                 </div>
+
                 <div className="space-y-5 flex-1 ">
                     <ClientInput
-                        title={"QID"}
+                        title={"CRno"}
                         type={"text"}
-                        value={firstName}
-                        setValue={setFirstName}
-                    />
-                    <br />
-                    <br />
-                    <ClientInput
-                        title={"QID"}
-                        type={"text"}
-                        value={firstName}
-                        setValue={setFirstName}
+                        value={crno}
+                        setValue={setCrno}
                     />
                     <br />
                     <br />
@@ -197,15 +218,23 @@ const Register = () => {
                     />
                     <br />
                     <br />
-                    <DatePickerWithRange className=" bg-input rounded-[25px]  w-full shadow-custom" />
+                    <DatePickerWithRange
+                        date={tempDate}
+                        setDate={setTempDate}
+                        className=" bg-input rounded-[25px]  w-full shadow-custom"
+                    />
                 </div>
             </div>
             <div className="flex justify-center mt-10">
                 <Button
-                    styles="w-fit mx-auto px-10 py-[10px]"
-                    handleClick={handleSubmit}
+                    className="w-fit mx-auto px-10 py-[10px]"
+                    onClick={handleSubmit}
                 >
-                    Create
+                    {isLoading ? (
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    ) : (
+                        "Create"
+                    )}
                 </Button>
             </div>
         </div>

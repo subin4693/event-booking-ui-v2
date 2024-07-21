@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-// import { useSelector, useDispatch } from "react-redux";
+
 import ClientInput from "@/components/ClientInput";
 import ClientTextArea from "@/components/ClientTextArea";
 import { Button } from "@/components/ui/button";
@@ -8,17 +8,20 @@ import CatringService from "./CatringService";
 import PhotographyService from "./PhotographyService";
 import VenueService from "./VenueService";
 import DecorationService from "./DecorationService";
-// import axios from "axios";
-// import { addItem } from "../../features/itemSlice";
+import axios from "axios";
+import { addItem } from "@/features/itemSlice";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Loader2 } from "lucide-react";
 
 const ClientServices = () => {
+    const [loading, setLoading] = useState(false);
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
     const [contactInfo, setContactInfo] = useState("");
     const [price, setPrice] = useState(0);
     const [image, setImage] = useState(null);
-    const [role, setRole] = useState("");
+
     //catring
     const [menuOptions, setMenuOptions] = useState([]);
 
@@ -34,80 +37,58 @@ const ClientServices = () => {
 
     const BASE_URL = import.meta.env.VITE_BASE_URL;
 
-    // const { client } = useSelector((state) => state.client);
+    const { client } = useSelector((state) => state.client);
 
-    // const { user } = useSelector((state) => state.user);
-    // const dispatch = useDispatch();
-    // const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const handleSubmit = async () => {
-        // console.log("*************7777777777777777777**********");
-        // console.log(portfolio);
-        // const data = new FormData();
-        // data.append("images", image[0]);
-        // data.append("typeId", role?._id);
-        // data.append("clientId", client._id);
-        // data.append("name", name);
-        // data.append("description", description);
-        // data.append("contactInfo", contactInfo);
-        // data.append("price", price);
-        // data.append("dates", client.availability);
-        // if (role?.type === "Catering") {
-        //     data.append("menuOptions", menuOptions);
-        // } else if (role?.type === "Venue") {
-        //     data.append("location", location);
-        //     data.append("capacity", capacity);
-        // } else if (role?.type === "Photography") {
-        //     data.append("portfolio", portfolio);
-        // } else if (role?.type === "Decoration") {
-        //     decorationImages.forEach((image) =>
-        //         data.append("decorationImages", image)
-        //     );
-        // }
-        // console.log(data);
-        // try {
-        //     await axios
-        //         .post(BASE_URL + "/items/create", data, {
-        //             headers: {
-        //                 "Content-Type": "multipart/form-data",
-        //             },
-        //         })
-        //         .then((res) => {
-        //             dispatch(addItem(res.data.newItem));
-        //             console.log(res.data);
-        //             navigate("/client/dashboard");
-        //         })
-        //         .catch((err) => console.log(err));
-        // } catch (error) {
-        //     console.error(error);
-        // }
-    };
+        const data = new FormData();
+        data.append("images", image[0]);
+        data.append("typeId", client?.role?._id);
+        data.append("clientId", client._id);
+        data.append("name", name);
+        data.append("description", description);
+        data.append("contactInfo", contactInfo);
+        data.append("price", price);
+        data.append("dates", client.availability);
+        if (client?.role?.type === "Catering") {
+            data.append("menuOptions", menuOptions);
+        } else if (client?.role?.type === "Venue") {
+            data.append("location", location);
+            data.append("capacity", capacity);
+        } else if (client?.role?.type === "Photography") {
+            data.append("portfolio", portfolio);
+        } else if (client?.role?.type === "Decoration") {
+            decorationImages.forEach((image) =>
+                data.append("decorationImages", image)
+            );
+        }
 
-    useEffect(() => {
-        // console.log(client?.role?.type);
-        // setRole(client?.role);
-        // const getTypes = async () => {
-        //   try {
-        //     const res = await axios.get(BASE_URL + "/types");
-        //     // console.log(res.data.types[0]);
-        //     // console.log(client.role);
-        //     const   = res.data.types.filter((type) => {
-        //       console.log(type.type);
-        //       console.log(client.role.type);
-        //       return type.type.toLowerCase === client.role.type.toLowerCase;
-        //     });
-        //     console.log( );
-        //     setRole( [0].type);
-        //   } catch (error) {
-        //     console.log(error);
-        //   }
-        // };
-        // getTypes();
-    }, []);
+        try {
+            setLoading(true);
+            await axios
+                .post(BASE_URL + "/items/create", data, {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                })
+                .then((res) => {
+                    dispatch(addItem(res.data.newItem));
+
+                    navigate("/vendor/dashboard");
+                })
+                .catch((err) => console.log(err));
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <div className="  bg-card text-foreground   flex flex-col justify-center items-center ">
-            <div className="flex w-full max-w-[1200px] gap-10">
+            <div className="flex w-full max-w-[1200px] gap-10 flex-col lg:flex-row">
                 <div className="space-y-5 flex-1 ">
                     {/* //typid //clientid */}
                     {/* name */}
@@ -150,14 +131,14 @@ const ClientServices = () => {
                     />
                 </div>
                 <div className="space-y-5 flex-1 ">
-                    {role.type == "Catering" && (
+                    {client?.role?.type.toLowerCase() === "catering" && (
                         <CatringService
                             options={menuOptions}
                             setOptions={setMenuOptions}
                         />
                     )}
 
-                    {role.type == "Venue" && (
+                    {client?.role?.type.toLowerCase() === "venue" && (
                         <VenueService
                             location={location}
                             setLocation={setLocation}
@@ -166,14 +147,14 @@ const ClientServices = () => {
                         />
                     )}
 
-                    {role.type == "Photograph" && (
+                    {client?.role?.type.toLowerCase() === "photograph" && (
                         <PhotographyService
                             options={portfolio}
                             setOptions={setPortfolio}
                         />
                     )}
 
-                    {role.type == "Decoration" && (
+                    {client?.role?.type.toLowerCase() === "decoration" && (
                         <DecorationService
                             images={decorationImages}
                             setImages={setDecorationImages}
@@ -184,10 +165,14 @@ const ClientServices = () => {
             </div>
             <div className="flex justify-center mt-10">
                 <Button
-                    styles="w-fit mx-auto px-10 py-[10px]"
-                    handleClick={handleSubmit}
+                    className="w-fit mx-auto px-10 py-[10px]"
+                    onClick={handleSubmit}
                 >
-                    Create
+                    {loading ? (
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    ) : (
+                        "Create"
+                    )}
                 </Button>
             </div>
         </div>
