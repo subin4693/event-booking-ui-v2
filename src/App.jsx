@@ -19,6 +19,8 @@ import EventDetails from "./page/users/Event-Details";
 import Profile from "./page/users/Profile";
 import BookEvents from "./page/users/Book-Events";
 import CreateEvents from "./page/users/Create-Events";
+import Signup from "./page/auth/Signup";
+import Signin from "./page/auth/Signin";
 
 const App = () => {
     return (
@@ -26,6 +28,9 @@ const App = () => {
             <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
                 <Router>
                     <Routes>
+                        <Route path="/" element={<Signin />} />
+                        <Route path="/signup" element={<Signup />} />
+
                         <Route path="/vendor" element={<VendorLayout />}>
                             <Route path="" element={<RegisterCard />} />
                             <Route path="register" element={<Register />} />
