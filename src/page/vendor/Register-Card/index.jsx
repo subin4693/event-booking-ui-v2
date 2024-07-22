@@ -5,12 +5,13 @@ import {
     CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import { setClient } from "@/features/clientSlice";
+import { Loader2 } from "lucide-react";
 
 const RegisterCard = () => {
     const [loading, setLoading] = useState(false);
@@ -67,7 +68,13 @@ const RegisterCard = () => {
                     </CardDescription>
                     <div className="flex items-center justify-center mt-7">
                         <Link to="register">
-                            <Button>Register</Button>
+                            <Button>
+                                {loading ? (
+                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                ) : (
+                                    "Register"
+                                )}
+                            </Button>
                         </Link>
                     </div>
                 </CardContent>

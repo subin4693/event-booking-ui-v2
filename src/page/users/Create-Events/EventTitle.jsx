@@ -24,7 +24,12 @@ const EventTitle = ({
                             <Link to="/users/events">Close</Link>
                         </Button>{" "}
                         &nbsp;&nbsp;&nbsp;
-                        <Button onClick={() => setShowTitleField(false)}>
+                        <Button
+                            onClick={() => {
+                                if (title.trim() && description.trim() && image)
+                                    return setShowTitleField(false);
+                            }}
+                        >
                             Save
                         </Button>
                     </div>
@@ -32,7 +37,7 @@ const EventTitle = ({
                 <div className="flex flex-col sm:flex-row  gap-5">
                     <div className="flex-1 ">
                         <div className="  bg-input rounded-[25px] h-full overflow-hidden border  group shadow-custom">
-                            <label className=" h-full  cursor-pointer flex items-center justify-center">
+                            <label className=" h-full min-h-[300px] min-h-[300px] cursor-pointer flex items-center justify-center">
                                 <input
                                     type="file"
                                     className="hidden w-full"
@@ -44,7 +49,7 @@ const EventTitle = ({
                                     <div className="relative">
                                         <img
                                             src={URL.createObjectURL(image)}
-                                            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                                            className="w-full h-full min-h-[300px] min-h-[300px] object-cover transition-transform duration-300 group-hover:scale-105"
                                         />
                                         <div
                                             className={`absolute inset-0 bg-black bg-opacity-30 group-hover:bg-opacity-70 transition duration-300`}
@@ -70,7 +75,7 @@ const EventTitle = ({
                         />
                         <textarea
                             rows="5"
-                            className="bg-input rounded-[25px] p-4 w-full shadow-custom resize-none overflow-auto box-border"
+                            className="bg-input rounded-[25px] p-4 w-full shadow-custom resize-none overflow-auto box-border h-[80%]"
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
                             placeholder="Event Description"

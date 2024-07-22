@@ -35,8 +35,9 @@ const Dashboard = () => {
     useEffect(() => {
         const getItems = async () => {
             // console.log(user.id);
+            console.log(client);
             await axios
-                .get(BASE_URL + "/items/user/" + client._id)
+                .get(BASE_URL + "/items/user/" + client?._id)
                 .then((res) => {
                     const data = res.data.items;
 
@@ -111,18 +112,21 @@ const Dashboard = () => {
                 <br />
                 <div className="flex flex-wrap justify-center gap-5">
                     {items &&
-                        items?.map((singleItem) => (
-                            <ServiceCard
-                                key={singleItem?._id}
-                                id={singleItem?._id}
-                                name={singleItem?.name}
-                                description={singleItem?.description}
-                                contact={singleItem?.contactInfo}
-                                price={singleItem?.price}
-                                image={singleItem?.images[0].data}
-                                handleDelete={handleDelete}
-                            />
-                        ))}
+                        items?.map((singleItem) => {
+                            console.log(singleItem);
+                            return (
+                                <ServiceCard
+                                    key={singleItem?._id}
+                                    id={singleItem?._id}
+                                    name={singleItem?.name}
+                                    description={singleItem?.description}
+                                    contact={singleItem?.contactInfo}
+                                    price={singleItem?.price}
+                                    image={singleItem?.images[0]?.data}
+                                    handleDelete={handleDelete}
+                                />
+                            );
+                        })}
                 </div>
             </div>
         </div>

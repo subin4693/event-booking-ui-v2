@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import ClientInput from "@/components/ClientInput";
 import ClientTextArea from "@/components/ClientTextArea";
@@ -42,6 +42,8 @@ const ClientServices = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
+    console.log(client);
+
     const handleSubmit = async () => {
         const data = new FormData();
         data.append("images", image[0]);
@@ -52,14 +54,14 @@ const ClientServices = () => {
         data.append("contactInfo", contactInfo);
         data.append("price", price);
         data.append("dates", client.availability);
-        if (client?.role?.type === "Catering") {
+        if (client?.role?.type.toLowerCase() === "catering") {
             data.append("menuOptions", menuOptions);
-        } else if (client?.role?.type === "Venue") {
+        } else if (client?.role?.type.toLowerCase() === "venue") {
             data.append("location", location);
             data.append("capacity", capacity);
-        } else if (client?.role?.type === "Photography") {
+        } else if (client?.role?.type.toLowerCase() === "photograph") {
             data.append("portfolio", portfolio);
-        } else if (client?.role?.type === "Decoration") {
+        } else if (client?.role?.type.toLowerCase() === "decoration") {
             decorationImages.forEach((image) =>
                 data.append("decorationImages", image)
             );
@@ -74,6 +76,7 @@ const ClientServices = () => {
                     },
                 })
                 .then((res) => {
+                    console.log(res.data.newItem);
                     dispatch(addItem(res.data.newItem));
 
                     navigate("/vendor/dashboard");
@@ -131,13 +134,13 @@ const ClientServices = () => {
                     />
                 </div>
                 <div className="space-y-5 flex-1 ">
+                    {console.log(client)}
                     {client?.role?.type.toLowerCase() === "catering" && (
                         <CatringService
                             options={menuOptions}
                             setOptions={setMenuOptions}
                         />
                     )}
-
                     {client?.role?.type.toLowerCase() === "venue" && (
                         <VenueService
                             location={location}
@@ -146,14 +149,12 @@ const ClientServices = () => {
                             setCapacity={setCapacity}
                         />
                     )}
-
                     {client?.role?.type.toLowerCase() === "photograph" && (
                         <PhotographyService
                             options={portfolio}
                             setOptions={setPortfolio}
                         />
                     )}
-
                     {client?.role?.type.toLowerCase() === "decoration" && (
                         <DecorationService
                             images={decorationImages}

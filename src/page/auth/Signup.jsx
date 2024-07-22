@@ -11,7 +11,7 @@ import fbLogo from "../../assets/fb.png";
 
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { Mail, User } from "lucide-react";
+import { Loader2, Mail, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useDispatch } from "react-redux";
 import { setUser } from "../../features/userSlice";
@@ -68,7 +68,7 @@ const Signup = () => {
             });
 
             dispatch(setUser(res.data.data));
-            if (role.toLowerCase() === "user") navigate("/user/events");
+            if (role.toLowerCase() === "user") navigate("/users/events");
             else navigate("/vendor");
         } catch (error) {
             toast({

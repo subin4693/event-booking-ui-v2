@@ -3,16 +3,24 @@ import { Card } from "@/components/ui/card";
 import { Pen, Trash } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-const ServiceCard = ({ name, description, price, contact, image,handleDelete,id }) => {
+const ServiceCard = ({
+    name,
+    description,
+    price,
+    contact,
+    image,
+    handleDelete,
+    id,
+}) => {
     return (
-        <Card className="flex p-3 w-fit relative group">
-            <div className="w-[200px] h-[200px] rounded-lg overflow-hidden">
+        <Card className="flex flex-col md:flex-row w-full p-3 md:w-[500px] relative group h-fit">
+            <div className="w-full md:w-[300px] flex-1 h-[200px] rounded-lg overflow-hidden">
                 <img
                     src={`data:image/png;base64,${image}`}
                     className="w-full h-full object-coveer"
                 />
             </div>
-            <div className="px-3 ml-6 flex flex-col">
+            <div className="md:px-3 w-full md:w-[200px] m-3 md:ml-6 flex-1 flex flex-col">
                 <div className="flex-1 justify-center">
                     <p>Title : {name}</p>
                     <p>Description : {description}</p>
@@ -24,7 +32,11 @@ const ServiceCard = ({ name, description, price, contact, image,handleDelete,id 
                         <Pen />
                     </Button>{" "}
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <Button variant="destructive" size="icon" onClick={()=>handleDelete(id)}>
+                    <Button
+                        variant="destructive"
+                        size="icon"
+                        onClick={() => handleDelete(id)}
+                    >
                         <Trash />
                     </Button>
                 </div>

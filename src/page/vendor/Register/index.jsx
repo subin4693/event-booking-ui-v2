@@ -13,8 +13,8 @@ import { useNavigate } from "react-router-dom";
 import { DatePickerWithRange } from "@/components/DatePicker";
 import { useDispatch, useSelector } from "react-redux";
 import { useToast } from "@/components/ui/use-toast";
-import { Loader2, Loader2Icon } from "lucide-react";
-import { addItem } from "@/features/itemSlice";
+import { Loader2 } from "lucide-react";
+import { setClient } from "@/features/clientSlice";
 
 const Register = () => {
     const [firstName, setFirstName] = useState("");
@@ -75,12 +75,18 @@ const Register = () => {
 
         try {
             setIsLoading(true);
-            const response = await axios.post(`${BASE_URL}/client`, data, {
+            await axios.post(`${BASE_URL}/client`, data, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },
             });
-            dispatch(addItem(response.data.newItem));
+
+            const res = await axios.get(BASE_URL + "/client/" + user.id);
+
+            if (res.data.status == "success") {
+                dispatch(setClient(res?.data.data.client));
+                navigate("/vendor/dashboard");
+            }
 
             navigate("/vendor/dashboard");
         } catch (error) {
@@ -185,17 +191,25 @@ const Register = () => {
                         value={contact}
                         setValue={setContact}
                     />
+
                     <br />
                     <br />
+                    <ClientTextArea
+                        title={"Description"}
+                        value={description}
+                        setValue={setDescription}
+                    />
+                </div>
+
+                <div className="space-y-5 flex-1 ">
                     <ClientInput
                         title={"QID"}
                         type={"text"}
                         value={qid}
                         setValue={setQid}
                     />
-                </div>
-
-                <div className="space-y-5 flex-1 ">
+                    <br />
+                    <br />
                     <ClientInput
                         title={"CRno"}
                         type={"text"}
@@ -209,13 +223,7 @@ const Register = () => {
                         value={image}
                         setValue={setImage}
                     />
-                    <br />
-                    <br />
-                    <ClientTextArea
-                        title={"Description"}
-                        value={description}
-                        setValue={setDescription}
-                    />
+
                     <br />
                     <br />
                     <DatePickerWithRange
