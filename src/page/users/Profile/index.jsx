@@ -120,40 +120,6 @@ const Dashboard = () => {
                             />
                         );
                     })}
-                {data &&
-                    data[selectedService]?.map((singleData) => {
-                        return (
-                            <ServiceCard
-                                image={singleData && singleData?.image}
-                                title={singleData && singleData?.item?.name}
-                                status={
-                                    singleData && singleData?.item?.isConfirmed
-                                }
-                                description={
-                                    singleData && singleData?.item?.description
-                                }
-                                mail={singleData.mail}
-                                selectedService={selectedService}
-                            />
-                        );
-                    })}
-                {data &&
-                    data[selectedService]?.map((singleData) => {
-                        return (
-                            <ServiceCard
-                                image={singleData && singleData?.image}
-                                title={singleData && singleData?.item?.name}
-                                status={
-                                    singleData && singleData?.item?.isConfirmed
-                                }
-                                description={
-                                    singleData && singleData?.item?.description
-                                }
-                                mail={singleData.mail}
-                                selectedService={selectedService}
-                            />
-                        );
-                    })}
             </div>
         </div>
     );

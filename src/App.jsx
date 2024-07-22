@@ -52,7 +52,7 @@ const App = () => {
                     </Routes>
                     <Routes>
                         <Route path="/users" element={<UserLayout />}>
-                            <Route path="dashboard" element={<Profile />} />
+                            <Route path="profile" element={<Profile />} />
                             <Route
                                 path="event-details/:event_id"
                                 element={<EventDetails />}

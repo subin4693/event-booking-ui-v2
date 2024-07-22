@@ -46,7 +46,7 @@ const Signup = () => {
             }
             if (password.trim().length < 8) {
                 toast({
-                    variant: "destrictive",
+                    variant: "destructive",
                     description: "Enter valid password length should be < 7 ",
                 });
 
@@ -54,7 +54,7 @@ const Signup = () => {
             }
             if (password !== confirmPassword) {
                 toast({
-                    variant: "destrictive",
+                    variant: "destructive",
                     description: "Password did not match",
                 });
                 return;
@@ -135,7 +135,7 @@ const Signup = () => {
                             {isLoading ? (
                                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                             ) : (
-                                "SIGN IN"
+                                "SIGN UP"
                             )}
                         </Button>
                         <p className="text-gray-600 mb-4">OR</p>

@@ -28,7 +28,7 @@ const UserSidebar = () => {
         navigate("/");
     };
     return (
-        <div className="sticky p-1 sm:p-5  md:px-10 left-0 top-0 bg-muted h-screen border z-10">
+        <div className="sticky p-1 sm:p-5  md:px-10 left-0 top-0 bg-muted h-screen border z-10 ">
             <h1 className="font-bold text-lg sm:text-2xl">
                 <span className="hidden sm:inline">Qatar </span>Event Hub
             </h1>
@@ -50,7 +50,7 @@ const UserSidebar = () => {
                 </Link>
                 <div className="flex flex-col mt-8 items-center">
                     <NavLink
-                        to="dashboard"
+                        to="profile"
                         className={({ isActive }) =>
                             isActive
                                 ? "p-3 px-4 rounded-lg mt-2 flex items-center duration-200 w-fit sm:w-full  bg-background "
