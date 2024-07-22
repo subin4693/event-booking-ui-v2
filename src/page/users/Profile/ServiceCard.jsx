@@ -3,8 +3,15 @@ import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import { Loader2 } from "lucide-react";
 
 const EventCard = ({
+    isPublished,
+    cancelLoading,
+    handleCancel,
+    handleConfirm,
+    publishLoading,
+    eventId,
     image,
     title,
     status,
@@ -13,8 +20,8 @@ const EventCard = ({
     selectedService,
 }) => {
     return (
-        <div className="flex mt-10">
-            <Card className="w-[350px] overflow-hidden pt-5 bg-muted">
+        <div className="flex mt-10 ">
+            <Card className="w-[350px] overflow-hidden pt-5 bg-muted ">
                 <CardContent>
                     <div className="   rounded-[25px]   overflow-hidden border  group shadow-custom  w-[300px]">
                         <div className="relative">
@@ -30,23 +37,60 @@ const EventCard = ({
                         </div>
                     </div>
 
-                    <p>Title : {title}</p>
+                    <p className="mt-4">Title : {title}</p>
                     <p>Description : {description}</p>
                     <p>Mail : {mail}</p>
-                    <p>Status : {status}</p>
-                    <br />
+                    <p className="mb-4">Status : {status}</p>
+
                     {selectedService !== "Past" && (
                         <>
-                            <Button variant="destructive">X Cancel</Button>
+                            <Button
+                                onClick={() => handleCancel(eventId)}
+                                variant="destructive"
+                            >
+                                {cancelLoading ? (
+                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                ) : (
+                                    "X Cancel"
+                                )}
+                            </Button>
                             &nbsp;&nbsp;&nbsp;&nbsp;
-                            {status ? (
+                            {status.toLowerCase() === "booked" && (
                                 <Button>
                                     <Link to="/users/create-event">
-                                        Book new
+                                        Edit Service
                                     </Link>
                                 </Button>
-                            ) : (
-                                <Button>Publish</Button>
+                            )}
+                            {status.toLowerCase() === "confirmed" &&
+                                !isPublished && (
+                                    <Button
+                                        onClick={() => handleConfirm(eventId)}
+                                    >
+                                        {publishLoading ? (
+                                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                        ) : (
+                                            "Publish"
+                                        )}
+                                    </Button>
+                                )}
+                            {status.toLowerCase() === "confirmed" &&
+                                isPublished && <Button>Published</Button>}
+                            {status.toLowerCase() === "canceled" && (
+                                <Button onClick={() => handleConfirm(eventId)}>
+                                    {publishLoading ? (
+                                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                    ) : (
+                                        "Publish"
+                                    )}
+                                </Button>
+                            )}
+                            {status.toLowerCase() === "rejected" && (
+                                <Button>
+                                    <Link to="/users/create-event">
+                                        Change Service
+                                    </Link>
+                                </Button>
                             )}
                         </>
                     )}

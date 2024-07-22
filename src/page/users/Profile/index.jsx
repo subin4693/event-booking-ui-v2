@@ -8,6 +8,10 @@ const Dashboard = () => {
     const [selectedService, setSelectedService] = useState("Upcoming");
     const { user } = useSelector((state) => state.user);
     const [loading, setLoading] = useState(false);
+
+    const [cancelLoading, setCancelLoading] = useState(false);
+
+    const [publishLoading, setPublishLoading] = useState(false);
     const BASE_URL = import.meta.env.VITE_BASE_URL;
     const [data, setData] = useState({});
     // const [data, setData] = useState({
@@ -18,12 +22,7 @@ const Dashboard = () => {
     //             mail: "asdf@gmail.com",
     //             contact: "contact of our service",
     //         },
-    //         {
-    //             title: "name of the event",
-    //             status: "Accpted",
-    //             mail: "asdf@gmail.com",
-    //             contact: "contact of our service",
-    //         },
+
     //     ],
 
     //     Past: [
@@ -33,26 +32,37 @@ const Dashboard = () => {
     //             mail: "asdf@gmail.com",
     //             contact: "contact of our service",
     //         },
-    //         {
-    //             title: "name of the event",
-    //             status: "Accpted",
-    //             mail: "asdf@gmail.com",
-    //             contact: "contact of our service",
-    //         },
-    //         {
-    //             title: "name of the event",
-    //             status: "Rejected",
-    //             mail: "asdf@gmail.com",
-    //             contact: "contact of our service",
-    //         },
-    //         {
-    //             title: "name of the event",
-    //             status: "Accpted",
-    //             mail: "asdf@gmail.com",
-    //             contact: "contact of our service",
-    //         },
-    //     ],
+
     // });
+
+    const handleConfirm = async (eventId) => {
+        try {
+            setPublishLoading(true);
+            const res = await axios.post(
+                BASE_URL + "/events/publish/" + eventId
+            );
+
+            setData({ Upcoming: res.data.events });
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setPublishLoading(false);
+        }
+    };
+    const handleCancel = async (eventId) => {
+        try {
+            setCancelLoading(true);
+            const res = await axios.post(
+                BASE_URL + "/events/publish/cancel/" + eventId
+            );
+
+            setData({ Upcoming: res.data.events });
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setCancelLoading(false);
+        }
+    };
 
     useEffect(() => {
         const getEvents = async () => {
@@ -105,13 +115,22 @@ const Dashboard = () => {
             <div className=" flex justify-center md:justify-between flex-wrap gap-5">
                 {data &&
                     data[selectedService]?.map((singleData) => {
+                        console.log(singleData);
                         return (
                             <ServiceCard
+                                cancelLoading={cancelLoading}
+                                setPublishLoading={setPublishLoading}
+                                publishLoading={publishLoading}
+                                handleConfirm={handleConfirm}
+                                handleCancel={handleCancel}
+                                key={singleData.item._id}
+                                eventId={singleData && singleData.item._id}
                                 image={singleData && singleData?.image}
                                 title={singleData && singleData?.item?.name}
-                                status={
-                                    singleData && singleData?.item?.isConfirmed
+                                isPublished={
+                                    singleData && singleData?.item?.isPublished
                                 }
+                                status={singleData && singleData?.item?.status}
                                 description={
                                     singleData && singleData?.item?.description
                                 }
