@@ -4,7 +4,7 @@ import React, { useState } from "react";
 
 const Topbar = ({ events, setSelectedService }) => {
     const [activeIndex, setActiveIndex] = useState(0);
-    const [navService, setNavService] = useState("Pending");
+    const [navService, setNavService] = useState("Upcoming");
     const [open, setOpen] = useState(false);
 
     return (
@@ -42,7 +42,7 @@ const Topbar = ({ events, setSelectedService }) => {
                 </div>
             </div>
             <div className="lg:hidden relative ">
-                <span className="font-bold text-lg">{navService} Events</span>
+                <span className="text-lg font-bold">{navService}</span>
                 <Button
                     size="icon"
                     variant={`${open ? "destructive" : "secondary"}`}

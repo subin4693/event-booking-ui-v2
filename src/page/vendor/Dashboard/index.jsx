@@ -35,7 +35,7 @@ const Dashboard = () => {
     useEffect(() => {
         const getItems = async () => {
             // console.log(user.id);
-            console.log(client);
+
             await axios
                 .get(BASE_URL + "/items/user/" + client?._id)
                 .then((res) => {
@@ -113,7 +113,6 @@ const Dashboard = () => {
                 <div className="flex flex-wrap justify-center gap-5">
                     {items &&
                         items?.map((singleItem) => {
-                            console.log(singleItem);
                             return (
                                 <ServiceCard
                                     key={singleItem?._id}
