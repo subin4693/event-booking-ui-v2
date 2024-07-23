@@ -116,7 +116,12 @@ const App = () => {
                                 user?.id ? <UserLayout /> : <Navigate to="/" />
                             }
                         >
+                            <Route path="register" element={<UserRegister />} />
                             <Route path="update" element={<UserUpdate />} />
+                            <Route
+                                path="dashboard"
+                                element={<UserDashboard />}
+                            />
                             <Route path="profile" element={<Profile />} />
                             <Route
                                 path="event-details/:event_id"
