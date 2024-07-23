@@ -52,7 +52,7 @@ const Events = () => {
     useEffect(() => {
         const getEvents = async () => {
             try {
-                setLoading(true);
+                setLoading(false);
 
                 const res = await axios.get(BASE_URL + "/events");
 
@@ -60,6 +60,7 @@ const Events = () => {
             } catch (error) {
                 console.log(error);
             } finally {
+                console.log("finally runned");
                 setLoading(false);
             }
         };
@@ -110,7 +111,9 @@ const Events = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-5 mt-10">
-                {events && events[event] ? (
+                {loading ? (
+                    events &&
+                    events[event] &&
                     events[event]?.map(({ item, image }) => {
                         return (
                             <EventCard

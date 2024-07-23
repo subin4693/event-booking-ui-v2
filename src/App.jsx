@@ -10,6 +10,8 @@ import CreateService from "@/page/vendor/Create-Service";
 import VendorDashboard from "@/page/vendor/Dashboard";
 import VendorEvents from "@/page/vendor/Events";
 import Register from "@/page/vendor/Register";
+import UserRegister from "@/page/users/Register";
+import UserUpdate from "@/page/users/UserUpdate";
 
 import UserDashboard from "@/page/users/Dashboard";
 import UserEvents from "@/page/users/Events";
@@ -114,6 +116,7 @@ const App = () => {
                                 user?.id ? <UserLayout /> : <Navigate to="/" />
                             }
                         >
+                            <Route path="update" element={<UserUpdate />} />
                             <Route path="profile" element={<Profile />} />
                             <Route
                                 path="event-details/:event_id"
