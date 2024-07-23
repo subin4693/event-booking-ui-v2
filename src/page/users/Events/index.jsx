@@ -55,7 +55,7 @@ const Events = () => {
                 setLoading(false);
 
                 const res = await axios.get(BASE_URL + "/events");
-
+                console.log(res.data);
                 setEvents({ Upcoming: res.data.Upcoming, Past: res.data.Past });
             } catch (error) {
                 console.log(error);
@@ -111,7 +111,7 @@ const Events = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-5 mt-10">
-                {loading ? (
+                {!loading ? (
                     events &&
                     events[event] &&
                     events[event]?.map(({ item, image }) => {
