@@ -1,5 +1,10 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+    BrowserRouter as Router,
+    Routes,
+    Route,
+    Navigate,
+} from "react-router-dom";
 import VendorLayout from "./layouts/VendorLayout";
 import CreateService from "@/page/vendor/Create-Service";
 import VendorDashboard from "@/page/vendor/Dashboard";
@@ -22,8 +27,12 @@ import CreateEvents from "./page/users/Create-Events";
 import Signup from "./page/auth/Signup";
 import Signin from "./page/auth/Signin";
 import { Toaster } from "@/components/ui/toaster";
+import { useSelector } from "react-redux";
 
 const App = () => {
+    const { user } = useSelector((state) => state.user);
+    const { client } = useSelector((state) => state.client);
+
     return (
         <div>
             <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
@@ -33,25 +42,78 @@ const App = () => {
                         <Route path="/" element={<Signin />} />
                         <Route path="/signup" element={<Signup />} />
 
-                        <Route path="/vendor" element={<VendorLayout />}>
+                        <Route
+                            path="/vendor"
+                            element={
+                                user?.id ? (
+                                    <VendorLayout />
+                                ) : (
+                                    <Navigate to="/" />
+                                )
+                            }
+                        >
                             <Route path="" element={<RegisterCard />} />
                             <Route path="register" element={<Register />} />
                             <Route
                                 path="dashboard"
-                                element={<VendorDashboard />}
+                                element={
+                                    client?._id ? (
+                                        <VendorDashboard />
+                                    ) : (
+                                        <Navigate to="/vendor/register" />
+                                    )
+                                }
                             />
-                            <Route path="events" element={<VendorEvents />} />
+                            <Route
+                                path="events"
+                                element={
+                                    client?._id ? (
+                                        <VendorEvents />
+                                    ) : (
+                                        <Navigate to="/vendor/register" />
+                                    )
+                                }
+                            />
 
                             <Route
                                 path="create-services"
-                                element={<CreateService />}
+                                element={
+                                    client?._id ? (
+                                        <CreateService />
+                                    ) : (
+                                        <Navigate to="/vendor/register" />
+                                    )
+                                }
                             />
-                            <Route path="settings" element={<Settings />} />
-                            <Route path="help" element={<Help />} />
+                            <Route
+                                path="settings"
+                                element={
+                                    client?._id ? (
+                                        <Settings />
+                                    ) : (
+                                        <Navigate to="/vendor/register" />
+                                    )
+                                }
+                            />
+                            <Route
+                                path="help"
+                                element={
+                                    client?._id ? (
+                                        <Help />
+                                    ) : (
+                                        <Navigate to="/vendor/register" />
+                                    )
+                                }
+                            />
                         </Route>
                     </Routes>
                     <Routes>
-                        <Route path="/users" element={<UserLayout />}>
+                        <Route
+                            path="/users"
+                            element={
+                                user?.id ? <UserLayout /> : <Navigate to="/" />
+                            }
+                        >
                             <Route path="profile" element={<Profile />} />
                             <Route
                                 path="event-details/:event_id"

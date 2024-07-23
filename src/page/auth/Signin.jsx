@@ -36,14 +36,14 @@ const Signin = () => {
             if (email.trim().length === 0 || password.trim().length === 0) {
                 toast({
                     variant: "destructive",
-                    description: "Enter valid credentials",
+                    title: "Enter valid credentials",
                 });
                 return;
             }
             if (password.trim().length < 8) {
                 toast({
                     variant: "destructive",
-                    description: "Password length must be greater than 8",
+                    title: "Password length must be greater than 8",
                 });
 
                 return;
@@ -58,7 +58,7 @@ const Signin = () => {
             if (res.data.data.role.toLowerCase() !== role.toLowerCase()) {
                 toast({
                     variant: "destructive",
-                    description: "There is no user found in " + role,
+                    title: "There is no user found in " + role,
                 });
                 return;
             }

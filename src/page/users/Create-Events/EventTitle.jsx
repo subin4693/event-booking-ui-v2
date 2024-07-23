@@ -2,6 +2,7 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import { ImageIcon } from "lucide-react";
 import { Link } from "react-router-dom";
+import { DatePickerWithRange } from "@/components/DatePicker";
 
 const EventTitle = ({
     setTitle,
@@ -11,6 +12,8 @@ const EventTitle = ({
     setShowTitleField,
     setImage,
     image,
+    date,
+    setDate,
 }) => {
     return (
         <div className="fixed inset-0 z-50 bg-black/80">
@@ -73,9 +76,14 @@ const EventTitle = ({
                             onChange={(e) => setTitle(e.target.value)}
                             placeholder="Event Title"
                         />
+                        <DatePickerWithRange
+                            date={date}
+                            setDate={setDate}
+                            className=" bg-input rounded-[25px]  w-full shadow-custom"
+                        />
                         <textarea
                             rows="5"
-                            className="bg-input rounded-[25px] p-4 w-full shadow-custom resize-none overflow-auto box-border h-[80%]"
+                            className="bg-input rounded-[25px] p-4 w-full shadow-custom resize-none overflow-auto box-border h-[60%]"
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
                             placeholder="Event Description"

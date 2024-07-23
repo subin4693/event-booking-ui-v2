@@ -5,7 +5,8 @@ const Navbar = ({ person }) => {
     return (
         <nav className="bg-primary flex justify-between items-center p-4 ">
             <h2 className="font-bold text-xl text-white">
-                Welcome to {person} Dashboard
+                <span className="hidden md:inline"> Welcome to </span> {person}{" "}
+                Dashboard
             </h2>
             <ModeToggle />
         </nav>

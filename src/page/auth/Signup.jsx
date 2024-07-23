@@ -39,7 +39,7 @@ const Signup = () => {
             ) {
                 toast({
                     variant: "destructive",
-                    description: "There was a problem.",
+                    title: "Emter valid credentials.",
                 });
 
                 return;
@@ -47,7 +47,7 @@ const Signup = () => {
             if (password.trim().length < 8) {
                 toast({
                     variant: "destructive",
-                    description: "Enter valid password length should be < 7 ",
+                    title: "Enter valid password length should be < 7 ",
                 });
 
                 return;
@@ -55,7 +55,7 @@ const Signup = () => {
             if (password !== confirmPassword) {
                 toast({
                     variant: "destructive",
-                    description: "Password did not match",
+                    title: "Password did not match",
                 });
                 return;
             }

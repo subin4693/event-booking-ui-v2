@@ -47,9 +47,9 @@ const RegisterCard = () => {
 
     return (
         <div className="flex justify-center items-center h-full">
-            <Card className="w-[450px] overflow-hidden pt-5 bg-muted">
+            <Card className="max-w-[450px] overflow-hidden pt-5 bg-muted">
                 <CardContent>
-                    <div className="w-full h-[200px] overflow-hidden rounded-lg mb-4">
+                    <div className="w-full h-[300px] overflow-hidden rounded-lg mb-4">
                         <img
                             src="https://github.com/shadcn.png"
                             className="w-full h-full object-coveer"
