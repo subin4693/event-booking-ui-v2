@@ -29,36 +29,36 @@ const Signup = () => {
   const BASE_URL = import.meta.env.VITE_BASE_URL;
   const { toast } = useToast();
 
-  const handleSignup = async () => {
-    try {
-      setLoading(true);
-      if (
-        name.trim().length === 0 ||
-        email.trim().length === 0 ||
-        password.trim().length === 0
-      ) {
-        toast({
-          variant: "destructive",
-          description: "There was a problem.",
-        });
+    const handleSignup = async () => {
+        try {
+            setLoading(true);
+            if (
+                name.trim().length === 0 ||
+                email.trim().length === 0 ||
+                password.trim().length === 0
+            ) {
+                toast({
+                    variant: "destructive",
+                    title: "Emter valid credentials.",
+                });
 
-        return;
-      }
-      if (password.trim().length < 8) {
-        toast({
-          variant: "destructive",
-          description: "Enter valid password length should be < 7 ",
-        });
+                return;
+            }
+            if (password.trim().length < 8) {
+                toast({
+                    variant: "destructive",
+                    title: "Enter valid password length should be < 7 ",
+                });
 
-        return;
-      }
-      if (password !== confirmPassword) {
-        toast({
-          variant: "destructive",
-          description: "Password did not match",
-        });
-        return;
-      }
+                return;
+            }
+            if (password !== confirmPassword) {
+                toast({
+                    variant: "destructive",
+                    title: "Password did not match",
+                });
+                return;
+            }
 
       const res = await axios.post(BASE_URL + "/user", {
         name: name,

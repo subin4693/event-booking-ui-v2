@@ -22,6 +22,33 @@ const CreateEvents = () => {
     const [photograph, setPhotograph] = useState("");
     const [decoration, setDecoration] = useState("");
 
+    const [date, setDate] = useState(new Date());
+    const [tempDate, setTempDate] = useState(new Date());
+
+    useEffect(() => {
+        if (!tempDate.from || !tempDate.to) {
+            return;
+        }
+
+        const fromDate = new Date(tempDate.from);
+        const toDate = new Date(tempDate.to);
+
+        function formatUTCISO(date) {
+            return date.toISOString().split(".")[0] + "Z";
+        }
+
+        const dates = [];
+        for (
+            let dt = new Date(fromDate);
+            dt <= toDate;
+            dt.setDate(dt.getDate() + 1)
+        ) {
+            dates.push(formatUTCISO(new Date(dt)));
+        }
+
+        setDate(dates);
+    }, [tempDate]);
+
     const { user } = useSelector((state) => state.user);
     const navigate = useNavigate();
 
@@ -67,6 +94,8 @@ const CreateEvents = () => {
             formData.append("catering", JSON.stringify(catering));
             formData.append("photograph", JSON.stringify(photograph));
             formData.append("decoration", JSON.stringify(decoration));
+
+            date.forEach((d) => formData.append("dates[]", d));
 
             const response = await axios
                 .post(BASE_URL + "/events", formData, {
@@ -115,6 +144,8 @@ const CreateEvents = () => {
                     setDescription={setDescription}
                     image={image}
                     setImage={setImage}
+                    date={tempDate}
+                    setDate={setTempDate}
                 />
             )}
             <Topbar

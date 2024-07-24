@@ -5,8 +5,8 @@ import { Card, CardContent } from "@/components/ui/card";
 const EventCard = ({ id, image, title, date, location }) => {
     return (
         <Link to={`/users/event-details/${id}`}>
-            <Card className="group relative overflow-hidden rounded-2xl">
-                <div className="relative">
+            <Card className="group relative overflow-hidden rounded-2xl h-[250px]  ">
+                <div className="relative h-full w-full">
                     <img
                         src={`data:image/png;base64,${image && image[0]?.data}`}
                         alt="image"

@@ -3,6 +3,7 @@ import Topbar from "./Topbar";
 import ServiceCard from "./ServiceCard";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const Dashboard = () => {
     const [selectedService, setSelectedService] = useState("Upcoming");
@@ -14,26 +15,6 @@ const Dashboard = () => {
     const [publishLoading, setPublishLoading] = useState(false);
     const BASE_URL = import.meta.env.VITE_BASE_URL;
     const [data, setData] = useState({});
-    // const [data, setData] = useState({
-    //     Upcoming: [
-    //         {
-    //             title: "name of the event",
-    //             status: "Rejected",
-    //             mail: "asdf@gmail.com",
-    //             contact: "contact of our service",
-    //         },
-
-    //     ],
-
-    //     Past: [
-    //         {
-    //             title: "name of the event",
-    //             status: "Rejected",
-    //             mail: "asdf@gmail.com",
-    //             contact: "contact of our service",
-    //         },
-
-    // });
 
     const handleConfirm = async (eventId) => {
         try {
@@ -42,7 +23,7 @@ const Dashboard = () => {
                 BASE_URL + "/events/publish/" + eventId
             );
 
-            setData({ Upcoming: res.data.events });
+            setData({ Upcoming: res.data.Upcoming, Past: res.data.Past });
         } catch (error) {
             console.log(error);
         } finally {
@@ -55,8 +36,7 @@ const Dashboard = () => {
             const res = await axios.post(
                 BASE_URL + "/events/publish/cancel/" + eventId
             );
-
-            setData({ Upcoming: res.data.events });
+            setData({ Upcoming: res.data.Upcoming, Past: res.data.Past });
         } catch (error) {
             console.log(error);
         } finally {
@@ -70,8 +50,7 @@ const Dashboard = () => {
                 setLoading(true);
 
                 const res = await axios.get(BASE_URL + "/events/" + user.id);
-                setData({ Upcoming: res.data.events });
-                console.log(res.data.events);
+                setData({ Upcoming: res.data.Upcoming, Past: res.data.Past });
             } catch (error) {
                 console.log(error);
             } finally {
@@ -112,10 +91,11 @@ const Dashboard = () => {
                     setSelectedService={setSelectedService}
                 />
             </div>
-            <div className=" flex justify-center md:justify-between flex-wrap gap-5">
-                {data &&
+            <div className=" flex justify-center md:justify-between flex-wrap gap-5 mt-10">
+                {!loading ? (
+                    data &&
+                    data[selectedService] &&
                     data[selectedService]?.map((singleData) => {
-                        console.log(singleData);
                         return (
                             <ServiceCard
                                 cancelLoading={cancelLoading}
@@ -138,7 +118,10 @@ const Dashboard = () => {
                                 selectedService={selectedService}
                             />
                         );
-                    })}
+                    })
+                ) : (
+                    <Skeleton className={"w-[350px] h-[400px]"} />
+                )}
             </div>
         </div>
     );

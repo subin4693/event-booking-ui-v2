@@ -130,7 +130,7 @@ const Register = () => {
 
     return (
         <div className="  bg-card text-foreground   flex flex-col justify-center items-center ">
-            <div className="flex w-full max-w-[1200px] gap-10">
+            <div className="flex w-full max-w-[1200px] gap-10 flex-col lg:flex-row">
                 <div className="space-y-5 flex-1 ">
                     {/* //typid //clientid */}
                     {/* name */}
