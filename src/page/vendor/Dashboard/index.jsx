@@ -41,11 +41,10 @@ const Dashboard = () => {
         .get(BASE_URL + "/items/user/" + client?._id)
         .then((res) => {
           const data = res.data.items;
-          console.log("render");
           dispatch(clearItems());
           data.map((d) => {
             d.item.images = d.image;
-
+            d.item.decorationImages = d.decorationImages;
             dispatch(addItem(d.item));
           });
         })

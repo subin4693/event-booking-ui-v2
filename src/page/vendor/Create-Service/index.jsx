@@ -14,11 +14,13 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Loader2 } from "lucide-react";
 import ClientInputImageEdit from "@/components/ClientInputImageEdit";
+import DecorationServiceEdit from "./DecorationServiceEdit";
 
 const ClientServices = () => {
   const Location = useLocation();
   const ID = Location?.state?.itemId;
   const { items } = useSelector((state) => state.item);
+
   const editItem = items.find((item) => item._id === ID);
 
   const [loading, setLoading] = useState(false);
@@ -50,9 +52,9 @@ const ClientServices = () => {
 
   const handleSubmit = async () => {
     const imageData = image ? image[0] : editItem?.images[0]?.data;
+    // console.log(decorationImages);
 
     if (ID) {
-      console.log(menuOptions);
       const formData = new FormData();
       if (name !== editItem.name) formData.append("name", name);
       if (description !== editItem.description)
@@ -60,7 +62,7 @@ const ClientServices = () => {
       if (contactInfo !== editItem.contactInfo)
         formData.append("contactInfo", contactInfo);
       if (price !== editItem.price) formData.append("price", price);
-      if (imageData.name) formData.append("images", imageData);
+      if (imageData?.name) formData.append("images", imageData);
 
       if (client?.role?.type.toLowerCase() === "catering") {
         if (menuOptions.length !== editItem?.menuOptions.length) {
@@ -228,12 +230,18 @@ const ClientServices = () => {
               setOptions={setPortfolio}
             />
           )}
-          {client?.role?.type.toLowerCase() === "decoration" && (
-            <DecorationService
-              images={decorationImages}
-              setImages={setDecorationImages}
-            />
-          )}
+          {client?.role?.type.toLowerCase() === "decoration" &&
+            (ID && editItem ? (
+              <DecorationServiceEdit
+                images={editItem?.decorationImages}
+                setImages={setDecorationImages}
+              />
+            ) : (
+              <DecorationService
+                images={decorationImages}
+                setImages={setDecorationImages}
+              />
+            ))}
         </div>
         {/* //description //images //price //contact info //dates */}
       </div>
