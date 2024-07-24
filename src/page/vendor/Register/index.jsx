@@ -6,6 +6,7 @@ import ClientTextArea from "@/components/ClientTextArea";
 import { Button } from "@/components/ui/button";
 import ClientInputImage from "@/components/ClientInputImage";
 import { v4 as uuidv4 } from "uuid";
+import MultiDatePicker from "@/components/MultiDatePicker";
 
 import axios from "axios";
 
@@ -30,8 +31,8 @@ const Register = () => {
     const [options, setOptions] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
 
-    const [date, setDate] = useState(new Date());
-    const [tempDate, setTempDate] = useState(new Date());
+    const [date, setDate] = useState();
+    // const [tempDate, setTempDate] = useState(new Date());
 
     const BASE_URL = import.meta.env.VITE_BASE_URL;
 
@@ -42,6 +43,8 @@ const Register = () => {
     const { toast } = useToast();
 
     const handleSubmit = async () => {
+        console.log(date);
+        return;
         if (!image || image.length === 0) {
             toast({
                 description: "There is no image provided",
@@ -95,29 +98,6 @@ const Register = () => {
             setIsLoading(false);
         }
     };
-    useEffect(() => {
-        if (!tempDate.from || !tempDate.to) {
-            return;
-        }
-
-        const fromDate = new Date(tempDate.from);
-        const toDate = new Date(tempDate.to);
-
-        function formatUTCISO(date) {
-            return date.toISOString().split(".")[0] + "Z";
-        }
-
-        const dates = [];
-        for (
-            let dt = new Date(fromDate);
-            dt <= toDate;
-            dt.setDate(dt.getDate() + 1)
-        ) {
-            dates.push(formatUTCISO(new Date(dt)));
-        }
-
-        setDate(dates);
-    }, [tempDate]);
 
     useEffect(() => {
         const getTypes = async () => {
@@ -226,11 +206,12 @@ const Register = () => {
 
                     <br />
                     <br />
-                    <DatePickerWithRange
+                    <MultiDatePicker setSelectedDate={setDate} />
+                    {/*<DatePickerWithRange
                         date={tempDate}
                         setDate={setTempDate}
                         className=" bg-input rounded-[25px]  w-full shadow-custom"
-                    />
+                    />*/}
                 </div>
             </div>
             <div className="flex justify-center mt-10">

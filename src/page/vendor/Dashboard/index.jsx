@@ -7,6 +7,7 @@ import { addItem, clearItems, deleteItem } from "@/features/itemSlice";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { useToast } from "@/components/ui/use-toast";
+
 const Dashboard = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -61,6 +62,7 @@ const Dashboard = () => {
                     <Button>Add Service</Button>
                 </Link>
             </div>
+
             <br />
             <div>
                 <h2 className="text-2xl font-bold">Organizing Events</h2>

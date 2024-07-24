@@ -34,6 +34,7 @@ import { useSelector } from "react-redux";
 const App = () => {
     const { user } = useSelector((state) => state.user);
     const { client } = useSelector((state) => state.client);
+    const { userDetail } = useSelector((state) => state.userDetail);
 
     return (
         <div>
@@ -122,21 +123,41 @@ const App = () => {
                                 path="dashboard"
                                 element={<UserDashboard />}
                             />
-                            <Route path="profile" element={<Profile />} />
+                            <Route
+                                path="profile"
+                                element={
+                                    userDetail?.lastName ? (
+                                        <Profile />
+                                    ) : (
+                                        <Navigate to="/users/register" />
+                                    )
+                                }
+                            />
                             <Route
                                 path="event-details/:event_id"
                                 element={<EventDetails />}
                             />
                             <Route
                                 path="create-event"
-                                element={<CreateEvents />}
+                                element={
+                                    userDetail?.lastName ? (
+                                        <CreateEvents />
+                                    ) : (
+                                        <Navigate to="/users/register" />
+                                    )
+                                }
                             />
                             <Route path="events" element={<UserEvents />} />
-                            <Route path="profile" element={<Profile />} />
-
+                            // <Route path="profile" element={<Profile />} />
                             <Route
                                 path="book-events"
-                                element={<BookEvents />}
+                                element={
+                                    userDetail?.lastName ? (
+                                        <BookEvents />
+                                    ) : (
+                                        <Navigate to="/users/register" />
+                                    )
+                                }
                             />
                             <Route path="settings" element={<Settings />} />
                             <Route path="help" element={<Help />} />
