@@ -12,43 +12,6 @@ const Events = () => {
     const [loading, setLoading] = useState(false);
     const BASE_URL = import.meta.env.VITE_BASE_URL;
 
-    // const events = [
-    //     {
-    //         _id: "sdafa",
-    //         image: "https://github.com/shadcn.png",
-    //         title: "Event title",
-    //         date: "2024-07-30",
-    //         location: "location of the event",
-    //     },
-    //     {
-    //         _id: "sdasadfafa",
-    //         image: "https://github.com/shadcn.png",
-    //         title: "Event title",
-    //         date: "2024-07-30",
-    //         location: "location of the event",
-    //     },
-    //     {
-    //         _id: "sdaasdfafa",
-    //         image: "https://github.com/shadcn.png",
-    //         title: "Event title",
-    //         date: "2024-07-30",
-    //         location: "location of the event",
-    //     },
-    //     {
-    //         _id: "sdadfasfa",
-    //         image: "https://github.com/shadcn.png",
-    //         title: "Event title",
-    //         date: "2024-07-30",
-    //         location: "location of the event",
-    //     },
-    //     {
-    //         _id: "sdafa2",
-    //         image: "https://github.com/shadcn.png",
-    //         title: "Event title",
-    //         date: "2024-07-30",
-    //         location: "location of the event",
-    //     },
-    // ];
     useEffect(() => {
         const getEvents = async () => {
             try {
@@ -60,7 +23,6 @@ const Events = () => {
             } catch (error) {
                 console.log(error);
             } finally {
-                console.log("finally runned");
                 setLoading(false);
             }
         };

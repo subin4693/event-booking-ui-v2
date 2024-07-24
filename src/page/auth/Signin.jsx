@@ -64,7 +64,7 @@ const Signin = () => {
             }
             dispatch(setUser(res.data.data));
             if (role.toLowerCase() == "user") {
-                navigate("/users/register");
+                navigate("/users/events");
             } else {
                 navigate("/vendor");
             }
