@@ -43,8 +43,6 @@ const Register = () => {
     const { toast } = useToast();
 
     const handleSubmit = async () => {
-        console.log(date);
-        return;
         if (!image || image.length === 0) {
             toast({
                 description: "There is no image provided",

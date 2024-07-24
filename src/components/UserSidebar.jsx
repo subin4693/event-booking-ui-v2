@@ -8,12 +8,14 @@ import {
     MessageCircleQuestion,
     Settings,
     User,
+    LayoutDashboard,
 } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { setUser } from "../features/userSlice";
 import { clearItems } from "../features/itemSlice";
 import { setClient } from "../features/clientSlice";
+import { setUserDetail } from "@/features/userDetailSlice";
 
 const UserSidebar = () => {
     const navigate = useNavigate();
@@ -73,6 +75,19 @@ const UserSidebar = () => {
                         <User />
                         <span className="hidden sm:inline">
                             &nbsp;&nbsp; &nbsp;My profile
+                        </span>
+                    </NavLink>
+                    <NavLink
+                        to="dashboard"
+                        className={({ isActive }) =>
+                            isActive
+                                ? "p-3 px-4 rounded-lg mt-2 flex items-center duration-200 w-fit sm:w-full  bg-background "
+                                : "p-3 px-4 rounded-lg mt-2 flex items-center duration-200 w-fit sm:w-full hover:bg-background "
+                        }
+                    >
+                        <LayoutDashboard />
+                        <span className="hidden sm:inline">
+                            &nbsp;&nbsp; &nbsp;Dashboard
                         </span>
                     </NavLink>
                     <NavLink

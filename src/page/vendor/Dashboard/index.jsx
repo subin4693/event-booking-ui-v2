@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import React, { useEffect } from "react";
 import EventBox from "./EventBox";
 import ServiceCard from "./ServiceCard";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { addItem, clearItems, deleteItem } from "@/features/itemSlice";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
@@ -11,6 +11,7 @@ import { useToast } from "@/components/ui/use-toast";
 const Dashboard = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const location = useLocation();
     const BASE_URL = import.meta.env.VITE_BASE_URL;
     const { client } = useSelector((state) => state.client);
     const { items } = useSelector((state) => state.item);
@@ -41,7 +42,7 @@ const Dashboard = () => {
                 .get(BASE_URL + "/items/user/" + client?._id)
                 .then((res) => {
                     const data = res.data.items;
-
+                    console.log("render");
                     dispatch(clearItems());
                     data.map((d) => {
                         d.item.images = d.image;
@@ -52,7 +53,11 @@ const Dashboard = () => {
                 .catch((err) => console.log(err));
         };
         getItems();
-    }, []);
+    }, [location]);
+
+    const handleEdit = (id) => {
+        navigate("/vendor/create-services/", { state: { itemId: id } });
+    };
 
     return (
         <div>
@@ -62,7 +67,6 @@ const Dashboard = () => {
                     <Button>Add Service</Button>
                 </Link>
             </div>
-
             <br />
             <div>
                 <h2 className="text-2xl font-bold">Organizing Events</h2>
@@ -125,6 +129,7 @@ const Dashboard = () => {
                                     price={singleItem?.price}
                                     image={singleItem?.images[0]?.data}
                                     handleDelete={handleDelete}
+                                    handleEdit={handleEdit}
                                 />
                             );
                         })}

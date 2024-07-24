@@ -7,16 +7,15 @@ import { Link } from "react-router-dom";
 const EventCard = ({
     image,
     title,
-    status,
-    description,
-    mail,
-    selectedService,
+    id,
+    date, 
+    location
 }) => {
     return (
         <div className="flex mt-10">
-            <Card className="w-[350px] overflow-hidden pt-5 bg-muted">
+            <Card className="w-[300px] overflow-hidden pt-5 bg-muted">
                 <CardContent>
-                    <div className="   rounded-[25px]   overflow-hidden border  group shadow-custom  w-[300px]">
+                    <div className="   rounded-[25px]   overflow-hidden border  group shadow-custom  w-[250px]">
                         <div className="relative">
                             <img
                                 src={`data:image/png;base64,${
@@ -31,25 +30,14 @@ const EventCard = ({
                     </div>
 
                     <p>Title : {title}</p>
-                    <p>Description : {description}</p>
-                    <p>Mail : {mail}</p>
-                    <p>Status : {status}</p>
+                    <p>Date : {date}</p>
+                    <p>location : {location}</p>
                     <br />
-                    {selectedService !== "Past" && (
-                        <>
-                            <Button variant="destructive">X Cancel</Button>
-                            &nbsp;&nbsp;&nbsp;&nbsp;
-                            {status ? (
-                                <Button>
-                                    <Link to="/users/create-event">
-                                        Book new
-                                    </Link>
-                                </Button>
-                            ) : (
-                                <Button>Publish</Button>
-                            )}
-                        </>
-                    )}
+                    <Button>
+                        <Link to="">
+                            Book now
+                        </Link>
+                    </Button>
                 </CardContent>
             </Card>
         </div>
