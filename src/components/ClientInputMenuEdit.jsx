@@ -1,22 +1,36 @@
 import React, { useState } from "react";
 import { Button } from "./ui/button";
 
-const ClientInputMenu = ({ value, setValue, title, placeholder }) => {
+const ClientInputMenuEdit = ({ value, setValue, title, placeholder }) => {
   const [text, setText] = useState("");
+
   const handleAdd = () => {
-    if (text.trim().length == 0) return;
+    if (text.trim().length === 0) return;
     setValue([...value, text]);
     setText("");
   };
+
+  const handleDelete = (index) => {
+    const updatedValue = value.filter((_, i) => i !== index);
+    setValue(updatedValue);
+  };
+
   return (
     <div>
       &nbsp;&nbsp;<label>{title} : </label>
       {value.length > 0 && (
         <ul className="bg-input rounded-[25px] p-5 mt-5">
-          {value &&
-            value.map((val, index) => (
-              <li key={index}>{index + 1 + " " + val}</li>
-            ))}
+          {value.map((val, index) => (
+            <li key={index} className="flex justify-between items-center">
+              {index + 1 + " " + val}
+              <Button
+                className="text-xs mt-3"
+                onClick={() => handleDelete(index)}
+              >
+                Delete
+              </Button>
+            </li>
+          ))}
         </ul>
       )}
       <input
@@ -36,4 +50,4 @@ const ClientInputMenu = ({ value, setValue, title, placeholder }) => {
   );
 };
 
-export default ClientInputMenu;
+export default ClientInputMenuEdit;

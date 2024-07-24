@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "../features/userSlice";
 import { clearItems } from "../features/itemSlice";
 import { setClient } from "../features/clientSlice";
+import { setUserDetail } from "@/features/userDetailSlice";
 
 const UserSidebar = () => {
   const navigate = useNavigate();
@@ -24,7 +25,7 @@ const UserSidebar = () => {
 
   const handleSignout = () => {
     dispatch(setUser({}));
-    dispatch(setClient({}));
+    dispatch(setUserDetail({}));
     dispatch(clearItems());
     navigate("/");
   };

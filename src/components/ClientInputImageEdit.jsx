@@ -1,13 +1,15 @@
 import { ImageIcon } from "lucide-react";
 import React, { useState } from "react";
 
-const ClientInputImage = ({ title, value, setValue }) => {
-  const [image, setImage] = useState(value);
+const ClientInputImageEdit = ({ title, value, setValue }) => {
+  const [image, setImage] = useState(`data:image/jpeg;base64,${value}`);
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     console.log(file);
     if (file) {
+      setImage(null);
+      setValue(null);
       setImage(URL.createObjectURL(file));
       setValue([file]);
     }
@@ -49,4 +51,4 @@ const ClientInputImage = ({ title, value, setValue }) => {
   );
 };
 
-export default ClientInputImage;
+export default ClientInputImageEdit;
