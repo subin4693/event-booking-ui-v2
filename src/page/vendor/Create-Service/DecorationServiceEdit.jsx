@@ -1,44 +1,66 @@
 import { ImageIcon } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 // import { CiImageOn } from "react-icons/ci";
 
-const DecorationServiceEdit = ({ images, setImages }) => {
-  const [img1, setImg1] = useState(`data:image/jpeg;base64,${images[0].data}`);
-  const [img2, setImg2] = useState(`data:image/jpeg;base64,${images[1].data}`);
-  const [img3, setImg3] = useState(`data:image/jpeg;base64,${images[2].data}`);
+const DecorationServiceEdit = ({
+  images,
+  setImages,
+  newDecorationImages,
+  setNewDecorationImages,
+}) => {
+  const [img1, setImg1] = useState(
+    images[0] ? `data:image/jpeg;base64,${images[0].data}` : null
+  );
+  const [img2, setImg2] = useState(
+    images[1] ? `data:image/jpeg;base64,${images[1].data}` : null
+  );
+  const [img3, setImg3] = useState(
+    images[2] ? `data:image/jpeg;base64,${images[2].data}` : null
+  );
   const [img4, setImg4] = useState(null);
 
-  const handleFileChange1 = (e) => {
+  const handleFileChange = (index, setImg) => (e) => {
     const file = e.target.files[0];
-    console.log(file);
     if (file) {
-      setImg1(null);
-      setImg1(URL.createObjectURL(file));
-      setImages([...images, file]);
+      const newImages = [...images];
+      newImages[index] = file;
+      setNewDecorationImages([...newDecorationImages, file]);
+      setImages(newImages);
+      setImg(URL.createObjectURL(file));
     }
   };
 
-  const handleFileChange2 = (e) => {
-    const file = e.target.files[0];
-    console.log(file);
-    if (file) {
-      setImg2(null);
-      setImg2(URL.createObjectURL(file));
-      setImages([...images, file]);
-    }
-  };
+  // console.log(images);
+  // const handleFileChange1 = (e) => {
+  //   const file = e.target.files[0];
+  //   console.log(file);
+  //   if (file) {
+  //     setImg1(null);
+  //     setImg1(URL.createObjectURL(file));
+  //     setImages([...images, file]);
+  //   }
+  // };
 
-  const handleFileChange3 = (e) => {
-    const file = e.target.files[0];
-    console.log(file);
-    if (file) {
-      setImg3(null);
-      setImg3(URL.createObjectURL(file));
-      setImages([...images, file]);
-    }
-  };
+  // const handleFileChange2 = (e) => {
+  //   const file = e.target.files[0];
+  //   console.log(file);
+  //   if (file) {
+  //     setImg2(null);
+  //     setImg2(URL.createObjectURL(file));
+  //     setImages([...images, file]);
+  //   }
+  // };
 
-  console.log(images);
+  // const handleFileChange3 = (e) => {
+  //   const file = e.target.files[0];
+  //   console.log(file);
+  //   if (file) {
+  //     setImg3(null);
+  //     setImg3(URL.createObjectURL(file));
+  //     setImages([...images, file]);
+  //   }
+  // };
+
   return (
     <div className="mt-5  h-full  ">
       &nbsp;&nbsp;<label>Decoration images : </label>
@@ -56,13 +78,12 @@ const DecorationServiceEdit = ({ images, setImages }) => {
               <div className="absolute inset-0 bg-black bg-opacity-30 group-hover:bg-opacity-70 transition duration-300"></div>
             </div>
           ) : (
-            // <CiImageOn />
             <ImageIcon className="size-20 text-gray-400" />
           )}
           <input
             type="file"
             className="hidden w-full"
-            onChange={handleFileChange1}
+            onChange={handleFileChange(0, setImg1)}
           />
         </label>
       </div>
@@ -85,7 +106,7 @@ const DecorationServiceEdit = ({ images, setImages }) => {
           <input
             type="file"
             className="hidden w-full"
-            onChange={handleFileChange2}
+            onChange={handleFileChange(1, setImg2)}
           />
         </label>
       </div>
@@ -107,7 +128,7 @@ const DecorationServiceEdit = ({ images, setImages }) => {
           <input
             type="file"
             className="hidden w-full"
-            onChange={handleFileChange3}
+            onChange={handleFileChange(2, setImg3)}
           />
         </label>
       </div>

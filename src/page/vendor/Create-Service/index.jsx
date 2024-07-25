@@ -15,8 +15,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { Loader2 } from "lucide-react";
 import ClientInputImageEdit from "@/components/ClientInputImageEdit";
 import DecorationServiceEdit from "./DecorationServiceEdit";
+import { useToast } from "@/components/ui/use-toast";
 
 const ClientServices = () => {
+  const { toast } = useToast();
   const Location = useLocation();
   const ID = Location?.state?.itemId;
   const { items } = useSelector((state) => state.item);
@@ -42,6 +44,7 @@ const ClientServices = () => {
 
   //decoration
   const [decorationImages, setDecorationImages] = useState([]);
+  const [newDecorationImages, setNewDecorationImages] = useState([]);
 
   const BASE_URL = import.meta.env.VITE_BASE_URL;
 
@@ -52,7 +55,6 @@ const ClientServices = () => {
 
   const handleSubmit = async () => {
     const imageData = image ? image[0] : editItem?.images[0]?.data;
-    // console.log(decorationImages);
 
     if (ID) {
       const formData = new FormData();
@@ -78,10 +80,19 @@ const ClientServices = () => {
           portfolio.forEach((port) => formData.append("portfolio", port));
         }
       } else if (client?.role?.type.toLowerCase() === "decoration") {
-        if (decorationImages.length > 4)
-          decorationImages.forEach((image) =>
-            formData.append("decorationImages", image)
-          );
+        if (newDecorationImages.length > 0) {
+          if (newDecorationImages.length === 3) {
+            newDecorationImages.forEach((image) =>
+              formData.append("decorationImages", image)
+            );
+          } else {
+            toast({
+              variant: "destructive",
+              title: "Edit all three images",
+            });
+            return;
+          }
+        }
       }
 
       console.log("Edit item");
@@ -235,6 +246,8 @@ const ClientServices = () => {
               <DecorationServiceEdit
                 images={editItem?.decorationImages}
                 setImages={setDecorationImages}
+                newDecorationImages={newDecorationImages}
+                setNewDecorationImages={setNewDecorationImages}
               />
             ) : (
               <DecorationService
