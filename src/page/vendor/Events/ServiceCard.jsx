@@ -61,13 +61,7 @@ const ServiceCard = ({
                     {selectedService !== "Past" && (
                         <>
                             {status.toLowerCase() === "rejected" && (
-                                <Button className="w-full">
-                                    {confirmLoading ? (
-                                        <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                                    ) : (
-                                        "Rejected "
-                                    )}
-                                </Button>
+                                <Button className="w-full">Rejected</Button>
                             )}
 
                             {status.toLowerCase() === "booked" && (

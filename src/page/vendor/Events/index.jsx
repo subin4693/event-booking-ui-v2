@@ -5,6 +5,7 @@ import Topbar from "./Topbar";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import ServiceCard from "./ServiceCard";
+import { ServCard } from "./ServCard";
 
 const Events = () => {
     const [selectedService, setSelectedService] = useState("Upcoming");
@@ -24,8 +25,6 @@ const Events = () => {
             const res = await axios.post(
                 BASE_URL + "/events/confirm/" + bookingId
             );
-
-            console.log(res.data);
             setData({ Upcoming: res.data.events });
         } catch (error) {
             console.log(error);
@@ -56,7 +55,7 @@ const Events = () => {
                 const res = await axios.get(
                     BASE_URL + "/events/client/" + client._id
                 );
-                console.log(res);
+                // console.log(res);
                 setData({ Upcoming: res.data.Upcoming, Past: res.data.Past });
             } catch (error) {
                 console.log(error);
@@ -64,6 +63,7 @@ const Events = () => {
                 setLoading(false);
             }
         };
+
         getEvents();
     }, []);
     return (
@@ -78,30 +78,46 @@ const Events = () => {
                 {data &&
                     data[selectedService]?.map((singleData) => {
                         return (
-                            <ServiceCard
-                                key={
-                                    singleData && singleData?.item?.eventId?._id
-                                }
-                                bookingId={singleData && singleData?.item?._id}
-                                status={
-                                    singleData && singleData?.item?.isConfirmed
-                                }
-                                handleConfirm={handleConfirm}
-                                handleReject={handleReject}
-                                confirmLoading={confirmLoading}
-                                rejectLoading={rejectLoading}
-                                image={singleData && singleData?.images}
-                                title={
-                                    singleData &&
-                                    singleData?.item?.eventId?.name
-                                }
-                                description={
-                                    singleData &&
-                                    singleData?.item?.eventId?.description
-                                }
-                                mail={singleData.mail}
-                                selectedService={selectedService}
-                            />
+                            <>
+                                <ServiceCard
+                                    key={
+                                        singleData &&
+                                        singleData?.item?.eventId?._id
+                                    }
+                                    bookingId={
+                                        singleData && singleData?.item?._id
+                                    }
+                                    title={
+                                        singleData &&
+                                        singleData?.item?.eventId?.name
+                                    }
+                                    image={singleData && singleData?.images}
+                                    description={
+                                        singleData &&
+                                        singleData?.item?.eventId?.description
+                                    }
+                                    mail={
+                                        singleData &&
+                                        singleData?.item?.userId?.email
+                                    }
+                                    status={
+                                        singleData &&
+                                        singleData?.item?.isConfirmed
+                                    }
+                                    name={
+                                        singleData &&
+                                        singleData?.item?.userId?.name
+                                    }
+                                    itemId={
+                                        singleData && singleData?.item?.itemId
+                                    }
+                                    selectedService={selectedService}
+                                    handleConfirm={handleConfirm}
+                                    handleReject={handleReject}
+                                    confirmLoading={confirmLoading}
+                                    rejectLoading={rejectLoading}
+                                />
+                            </>
                         );
                     })}
             </div>

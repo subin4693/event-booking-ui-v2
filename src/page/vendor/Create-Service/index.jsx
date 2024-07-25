@@ -14,11 +14,15 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Loader2 } from "lucide-react";
 import ClientInputImageEdit from "@/components/ClientInputImageEdit";
+import DecorationServiceEdit from "./DecorationServiceEdit";
+import { useToast } from "@/components/ui/use-toast";
 
 const ClientServices = () => {
+    const { toast } = useToast();
     const Location = useLocation();
     const ID = Location?.state?.itemId;
     const { items } = useSelector((state) => state.item);
+
     const editItem = items.find((item) => item._id === ID);
 
     const [loading, setLoading] = useState(false);
@@ -40,6 +44,7 @@ const ClientServices = () => {
 
     //decoration
     const [decorationImages, setDecorationImages] = useState([]);
+    const [newDecorationImages, setNewDecorationImages] = useState([]);
 
     const BASE_URL = import.meta.env.VITE_BASE_URL;
 
@@ -52,7 +57,6 @@ const ClientServices = () => {
         const imageData = image ? image[0] : editItem?.images[0]?.data;
 
         if (ID) {
-            console.log(menuOptions);
             const formData = new FormData();
             if (name !== editItem.name) formData.append("name", name);
             if (description !== editItem.description)
@@ -60,7 +64,7 @@ const ClientServices = () => {
             if (contactInfo !== editItem.contactInfo)
                 formData.append("contactInfo", contactInfo);
             if (price !== editItem.price) formData.append("price", price);
-            if (imageData.name) formData.append("images", imageData);
+            if (imageData?.name) formData.append("images", imageData);
 
             if (client?.role?.type.toLowerCase() === "catering") {
                 if (menuOptions.length !== editItem?.menuOptions.length) {
@@ -80,10 +84,19 @@ const ClientServices = () => {
                     );
                 }
             } else if (client?.role?.type.toLowerCase() === "decoration") {
-                if (decorationImages.length > 4)
-                    decorationImages.forEach((image) => {
-                        formData.append("decorationImages", image);
-                    });
+                if (newDecorationImages.length > 0) {
+                    if (newDecorationImages.length === 3) {
+                        newDecorationImages.forEach((image) =>
+                            formData.append("decorationImages", image)
+                        );
+                    } else {
+                        toast({
+                            variant: "destructive",
+                            title: "Edit all three images",
+                        });
+                        return;
+                    }
+                }
             }
 
             console.log("Edit item");
@@ -126,10 +139,12 @@ const ClientServices = () => {
             } else if (client?.role?.type.toLowerCase() === "photograph") {
                 data.append("portfolio", portfolio);
             } else if (client?.role?.type.toLowerCase() === "decoration") {
-                decorationImages.forEach((image) => {
-                    data.append("decorationImages", image);
-                });
+                decorationImages.forEach((image) =>
+                    data.append("decorationImages", image)
+                );
             }
+
+            console.log("create item");
 
             try {
                 setLoading(true);
@@ -230,12 +245,20 @@ const ClientServices = () => {
                             setOptions={setPortfolio}
                         />
                     )}
-                    {client?.role?.type.toLowerCase() === "decoration" && (
-                        <DecorationService
-                            images={decorationImages}
-                            setImages={setDecorationImages}
-                        />
-                    )}
+                    {client?.role?.type.toLowerCase() === "decoration" &&
+                        (ID && editItem ? (
+                            <DecorationServiceEdit
+                                images={editItem?.decorationImages}
+                                setImages={setDecorationImages}
+                                newDecorationImages={newDecorationImages}
+                                setNewDecorationImages={setNewDecorationImages}
+                            />
+                        ) : (
+                            <DecorationService
+                                images={decorationImages}
+                                setImages={setDecorationImages}
+                            />
+                        ))}
                 </div>
                 {/* //description //images //price //contact info //dates */}
             </div>

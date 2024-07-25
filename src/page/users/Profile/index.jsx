@@ -8,6 +8,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 const Dashboard = () => {
     const [selectedService, setSelectedService] = useState("Upcoming");
     const { user } = useSelector((state) => state.user);
+    const { userDetail } = useSelector((state) => state.userDetail);
     const [loading, setLoading] = useState(false);
 
     const [cancelLoading, setCancelLoading] = useState(false);
@@ -64,10 +65,18 @@ const Dashboard = () => {
             <div className="flex gap-10 flex-col md:flex-row">
                 <div className="   rounded-[25px]   overflow-hidden border  group shadow-custom h-[300px] w-[300px]">
                     <div className="relative">
-                        <img
-                            src="https://github.com/shadcn.png"
-                            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                        />
+                        {userDetail && userDetail.profile_photo ? (
+                            <img
+                                src={userDetail.profile_photo}
+                                className="w-full h-[300px] object-cover transition-transform duration-300 group-hover:scale-105"
+                            />
+                        ) : (
+                            <img
+                                src="https://github.com/shadcn.png"
+                                className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                            />
+                        )}
+
                         <div
                             className={`absolute inset-0 bg-black bg-opacity-30 group-hover:bg-opacity-70 transition duration-300`}
                         ></div>
@@ -91,7 +100,7 @@ const Dashboard = () => {
                     setSelectedService={setSelectedService}
                 />
             </div>
-            <div className=" flex justify-center  md:justify-start flex-wrap gap-5 mt-10">
+            <div className=" flex justify-center md:justify-between flex-wrap gap-5 mt-10">
                 {!loading ? (
                     data &&
                     data[selectedService] &&
