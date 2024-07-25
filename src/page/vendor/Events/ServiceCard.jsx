@@ -1,109 +1,92 @@
-import React, { useEffect } from "react";
-
+import React, { useEffect, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-
-import { Loader2 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
+import EventCard from "@/page/vendor/Events/EventCard";
 
 const ServiceCard = ({
-    bookingId,
-    index,
-    image,
-    title,
-    status,
-    description,
-    mail,
-    selectedService,
-    handleConfirm,
-    handleReject,
-    confirmLoading,
-    rejectLoading,
+  bookingId,
+  index,
+  image,
+  title,
+  status,
+  description,
+  mail,
+  selectedService,
+  handleConfirm,
+  handleReject,
+  confirmLoading,
+  rejectLoading,
+  itemId,
+  name,
+  dates,
 }) => {
-    const { toast } = useToast();
+  const { toast } = useToast();
+  const [isModalOpen, setModalOpen] = useState(false);
 
-    useEffect(() => {
-        if (confirmLoading) {
-            toast({
-                title: "Confirmed",
-            });
-        }
+  const openModal = () => setModalOpen(true);
+  const closeModal = () => setModalOpen(false);
+  const date =
+    dates[0].split("T", 1)[0] +
+    " --- " +
+    dates[dates.length - 1].split("T", 1)[0];
 
-        if (rejectLoading) {
-            toast({ title: "Rejected" });
-        }
-    }, [confirmLoading, rejectLoading]);
+  useEffect(() => {
+    if (confirmLoading) {
+      toast({
+        title: "Confirmed",
+      });
+    }
 
-    return (
-        <div className="flex mt-10">
-            <Card className="w-[350px] overflow-hidden pt-5 bg-muted">
-                <CardContent>
-                    <div className="rounded-[25px] overflow-hidden border  group shadow-custom  w-[300px]">
-                        <div className="relative">
-                            <img
-                                src={`data:image/png;base64,${
-                                    image && image[0]?.data
-                                }`}
-                                className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                            />
-                            <div
-                                className={`absolute inset-0 bg-black bg-opacity-30 group-hover:bg-opacity-70 transition duration-300`}
-                            ></div>
-                        </div>
-                    </div>
+    if (rejectLoading) {
+      toast({ title: "Rejected" });
+    }
+  }, [confirmLoading, rejectLoading]);
 
-                    <p className="mt-4">Title : {title}</p>
-                    <p>Description : {description}</p>
-                    <p>Mail : {mail}</p>
-                    <p>Status : {status}</p>
-                    <br />
+  return (
+    <>
+      <div onClick={openModal} className="flex mt-10 cursor-pointer">
+        <Card className="w-[350px] overflow-hidden pt-5 bg-muted">
+          <CardContent>
+            <div className="rounded-[25px] overflow-hidden border  group shadow-custom  w-[300px]">
+              <div className="relative ">
+                <img
+                  src={`data:image/png;base64,${image && image[0]?.data}`}
+                  className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105 "
+                />
+                <div
+                  className={`absolute inset-0 bg-black bg-opacity-30 group-hover:bg-opacity-70 transition duration-300`}
+                ></div>
+              </div>
+            </div>
 
-                    {selectedService !== "Past" && (
-                        <>
-                            {status.toLowerCase() === "rejected" && (
-                                <Button className="w-full">Rejected</Button>
-                            )}
-
-                            {status.toLowerCase() === "booked" && (
-                                <>
-                                    <Button
-                                        variant="destructive"
-                                        onClick={() =>
-                                            handleReject(bookingId, index)
-                                        }
-                                    >
-                                        X Reject
-                                    </Button>{" "}
-                                    &nbsp;&nbsp;&nbsp;&nbsp;
-                                    <Button
-                                        onClick={() =>
-                                            handleConfirm(bookingId, true)
-                                        }
-                                    >
-                                        Confirm
-                                    </Button>
-                                </>
-                            )}
-                            {status.toLowerCase() === "confirmed" && (
-                                <>
-                                    <Button
-                                        variant="destructive"
-                                        onClick={() =>
-                                            handleReject(bookingId, index)
-                                        }
-                                    >
-                                        X Reject
-                                    </Button>
-                                    &nbsp;&nbsp;&nbsp;&nbsp;
-                                    <Button>Confirmed</Button>
-                                </>
-                            )}
-                        </>
-                    )}
-                </CardContent>
-            </Card>
-        </div>
-    );
+            <p className="mt-4">Title : {title}</p>
+            <p>Description : {description}</p>
+            <p>Status : {status}</p>
+            <br />
+          </CardContent>
+        </Card>
+      </div>
+      <EventCard
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        bookingId={bookingId}
+        index={index}
+        image={image}
+        title={title}
+        status={status}
+        description={description}
+        mail={mail}
+        selectedService={selectedService}
+        handleConfirm={handleConfirm}
+        handleReject={handleReject}
+        confirmLoading={confirmLoading}
+        rejectLoading={rejectLoading}
+        itemId={itemId}
+        name={name}
+        date={date}
+      />
+    </>
+  );
 };
 
 export default ServiceCard;
