@@ -22,8 +22,10 @@ const Events = () => {
         try {
             setConfirmLoading(true);
             const res = await axios.post(
-                BASE_URL + "/events/confirm/" + bookingId,
+                BASE_URL + "/events/confirm/" + bookingId
             );
+
+            console.log(res.data);
             setData({ Upcoming: res.data.events });
         } catch (error) {
             console.log(error);
@@ -35,7 +37,7 @@ const Events = () => {
         try {
             setRejectLoading(true);
             const res = await axios.post(
-                BASE_URL + "/events/reject/" + bookingId,
+                BASE_URL + "/events/reject/" + bookingId
             );
 
             setData({ Upcoming: res.data.events });
@@ -52,7 +54,7 @@ const Events = () => {
                 setLoading(true);
 
                 const res = await axios.get(
-                    BASE_URL + "/events/client/" + client._id,
+                    BASE_URL + "/events/client/" + client._id
                 );
                 console.log(res);
                 setData({ Upcoming: res.data.Upcoming, Past: res.data.Past });

@@ -9,7 +9,7 @@ const DatePickerComponent = ({ setSelectedDate }) => {
 
     const handleDateChange = (selectedDates) => {
         const isoDates = selectedDates.map((date) =>
-            date.toDate().toISOString(),
+            date.toDate().toISOString()
         );
         setDates(selectedDates);
         setSelectedDate(isoDates);
@@ -40,76 +40,83 @@ const DatePickerComponent = ({ setSelectedDate }) => {
                     width: "100%",
                 }}
                 calendarPosition="bottom-center"
-                containerClassName="custom-date-picker-container" // Custom class for the container
+                containerClassName="custom-date-picker-container"
             />
             <style>
                 {`
-          /* Ensure root variables are defined */
-          :root {
-          
-  --rmdp-primary-purple: #80164a; /* Original Primary Color */
-  --rmdp-secondary-purple: #b33973; /* Slightly lighter for secondary purposes */
-  --rmdp-shadow-purple: #991d5d; /* Shadow, a little darker for contrast */
-  --rmdp-today-purple: #ff006e; /* Today, bright standout color */
-  --rmdp-hover-purple: #bf4c8a; /* Hover, lighter version for hover effects */
-  --rmdp-deselect-purple: #cc6699; /* Deselect, slightly muted for less emphasis */
-          
-            --secondary-hue: 0;  
+           
+           :root {
+            --rmdp-primary-purple: #80164a;
+            --rmdp-secondary-purple: #b33973;
+            --rmdp-shadow-purple: #991d5d;
+            --rmdp-today-purple: #ff006e;
+            --rmdp-hover-purple: #bf4c8a;
+            --rmdp-deselect-purple: #cc6699;
+        
+            --secondary-hue: 0;
             --secondary-saturation: 0%;
             --secondary-lightness: 89.8%;
             --foreground-hue: 0;
             --foreground-saturation: 0%;
-            --foreground-lightness: 20%; /* Adjust for desired text color */
-          }
-
-
-          .dark {
-           
+            --foreground-lightness: 20%;
+        }
+        
+        .dark {
             --secondary-hue: 0;
             --secondary-saturation: 0%;
             --secondary-lightness: 14.9%;
-            --foreground-lightness: 80%; /* Lighter text color for dark mode */
-          }
- 
-          /* Apply custom styles */
-          .custom-date-picker-container .rmdp-wrapper {
-            background-color: hsl(var(--secondary-hue), var(--secondary-saturation), var(--secondary-lightness)) !important;
-            
-          }
-          .rmdp-week-day{
-            font-size:1rem;
-          }
-
-          .custom-input {
-         box-shadow:
-            rgba(0, 0, 0, 0.25) 0px 0.0625em 0.0625em,
-            rgba(0, 0, 0, 0.25) 0px 0.125em 0.5em,
-            rgba(255, 255, 255, 0.1) 0px 0px 0px 1px inset;
-          padding: 4px 12px;
-          background-color: hsl(var(--secondary-hue), var(--secondary-saturation), var(--secondary-lightness)) !important;
-   
-  
+            --foreground-lightness: 80%;
         }
- 
-          /* Ensure text colors are applied */
-          .custom-date-picker-container .rmdp-day {
+        
+        .custom-date-picker-container .rmdp-wrapper {
+            background-color: hsl(
+                var(--secondary-hue),
+                var(--secondary-saturation),
+                var(--secondary-lightness)
+            ) !important;
+        }
+        .rmdp-week-day {
+            font-size: 1rem;
+        }
+        
+        .custom-input {
+            box-shadow: rgba(0, 0, 0, 0.25) 0px 0.0625em 0.0625em,
+                rgba(0, 0, 0, 0.25) 0px 0.125em 0.5em,
+                rgba(255, 255, 255, 0.1) 0px 0px 0px 1px inset;
+            padding: 4px 12px;
+            background-color: hsl(
+                var(--secondary-hue),
+                var(--secondary-saturation),
+                var(--secondary-lightness)
+            ) !important;
+        }
+        
+        .custom-date-picker-container .rmdp-day {
             transition: 500;
-             font-weight:bold;
-             margin:10px;
-           
-          color: hsl(var(--foreground-hue), var(--foreground-saturation), var(--foreground-lightness)) !important;
-          }
-         .rmdp-day span{
+            font-weight: bold;
+            margin: 10px;
+        
+            color: hsl(
+                var(--foreground-hue),
+                var(--foreground-saturation),
+                var(--foreground-lightness)
+            ) !important;
+        }
+        .rmdp-day span {
             border-radius: 16%;
-          }
-          .rmdp-day.rmdp-disabled span{
-            color:gray;
-          }
-          
-          /* Month and Year in header */
-          .custom-date-picker-container .rmdp-header-values {
-            color: hsl(var(--foreground-hue), var(--foreground-saturation), var(--foreground-lightness)) !important;
-          }
+        }
+        .rmdp-day.rmdp-disabled span {
+            color: gray;
+        }
+        
+        .custom-date-picker-container .rmdp-header-values {
+            color: hsl(
+                var(--foreground-hue),
+                var(--foreground-saturation),
+                var(--foreground-lightness)
+            ) !important;
+        }
+        
         `}
             </style>
         </div>

@@ -91,7 +91,7 @@ const Dashboard = () => {
                     setSelectedService={setSelectedService}
                 />
             </div>
-            <div className=" flex justify-center md:justify-between flex-wrap gap-5 mt-10">
+            <div className=" flex justify-center  md:justify-start flex-wrap gap-5 mt-10">
                 {!loading ? (
                     data &&
                     data[selectedService] &&

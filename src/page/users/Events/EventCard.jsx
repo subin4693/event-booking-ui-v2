@@ -16,8 +16,13 @@ const EventCard = ({ id, image, title, date, location }) => {
                 </div>
                 <CardContent className="absolute bottom-0 left-0 right-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-white p-4">
                     <h5 className="text-lg font-semibold">Title: {title}</h5>
-                    <h5 className="text-sm">Date: {date}</h5>
-                    <h5 className="text-sm">Location: {location}</h5>
+                    <h5 className="text-sm">
+                        Date:{" "}
+                        {date[0].split("T")[0] +
+                            "--- " +
+                            date[date.length - 1].split("T")[0]}
+                    </h5>
+                    {/* <h5 className="text-sm">Location: {location}</h5> */}
                 </CardContent>
             </Card>
         </Link>

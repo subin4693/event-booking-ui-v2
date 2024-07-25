@@ -29,9 +29,19 @@ const CreateEvents = () => {
         if (!tempDate.from || !tempDate.to) {
             return;
         }
+        console.log("get runned");
+        console.log(tempDate);
 
-        const fromDate = new Date(tempDate.from);
-        const toDate = new Date(tempDate.to);
+        // Create a new Date object from the input, setting the time to midnight in UTC
+        function normalizeToUTC(date) {
+            const utcDate = new Date(
+                Date.UTC(date.getFullYear(), date.getMonth(), date.getDate())
+            );
+            return utcDate;
+        }
+
+        const fromDate = normalizeToUTC(new Date(tempDate.from));
+        const toDate = normalizeToUTC(new Date(tempDate.to));
 
         function formatUTCISO(date) {
             return date.toISOString().split(".")[0] + "Z";
@@ -45,6 +55,7 @@ const CreateEvents = () => {
         ) {
             dates.push(formatUTCISO(new Date(dt)));
         }
+        console.log(dates);
 
         setDate(dates);
     }, [tempDate]);

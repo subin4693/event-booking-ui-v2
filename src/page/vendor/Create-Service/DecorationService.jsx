@@ -6,7 +6,6 @@ const DecorationService = ({ images, setImages }) => {
     const [img1, setImg1] = useState(null);
     const [img2, setImg2] = useState(null);
     const [img3, setImg3] = useState(null);
-    const [img4, setImg4] = useState(null);
 
     return (
         <div className="mt-5  h-full  ">

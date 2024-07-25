@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
 import { Loader2 } from "lucide-react";
+import { useToast } from "@/components/ui/use-toast";
 
 const ServiceCard = ({
     bookingId,
@@ -19,6 +20,20 @@ const ServiceCard = ({
     confirmLoading,
     rejectLoading,
 }) => {
+    const { toast } = useToast();
+
+    useEffect(() => {
+        if (confirmLoading) {
+            toast({
+                title: "Confirmed",
+            });
+        }
+
+        if (rejectLoading) {
+            toast({ title: "Rejected" });
+        }
+    }, [confirmLoading, rejectLoading]);
+
     return (
         <div className="flex mt-10">
             <Card className="w-[350px] overflow-hidden pt-5 bg-muted">
@@ -63,11 +78,7 @@ const ServiceCard = ({
                                             handleReject(bookingId, index)
                                         }
                                     >
-                                        {rejectLoading ? (
-                                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                        ) : (
-                                            "X Reject"
-                                        )}
+                                        X Reject
                                     </Button>{" "}
                                     &nbsp;&nbsp;&nbsp;&nbsp;
                                     <Button
@@ -75,11 +86,7 @@ const ServiceCard = ({
                                             handleConfirm(bookingId, true)
                                         }
                                     >
-                                        {confirmLoading ? (
-                                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                        ) : (
-                                            "Confirm"
-                                        )}
+                                        Confirm
                                     </Button>
                                 </>
                             )}
@@ -91,20 +98,10 @@ const ServiceCard = ({
                                             handleReject(bookingId, index)
                                         }
                                     >
-                                        {rejectLoading ? (
-                                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                        ) : (
-                                            "X Reject"
-                                        )}
+                                        X Reject
                                     </Button>
                                     &nbsp;&nbsp;&nbsp;&nbsp;
-                                    <Button>
-                                        {confirmLoading ? (
-                                            <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                                        ) : (
-                                            "Confirmed"
-                                        )}
-                                    </Button>
+                                    <Button>Confirmed</Button>
                                 </>
                             )}
                         </>

@@ -83,8 +83,7 @@ const Events = () => {
                                 id={item && item?._id}
                                 image={image && image}
                                 title={item && item?.name}
-                                date={""}
-                                location={""}
+                                date={item && item?.dates}
                             />
                         );
                     })
