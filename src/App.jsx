@@ -30,6 +30,7 @@ import Signup from "./page/auth/Signup";
 import Signin from "./page/auth/Signin";
 import { Toaster } from "@/components/ui/toaster";
 import { useSelector } from "react-redux";
+import EditEvents from "./page/users/Edit-Events";
 
 const App = () => {
     const { user } = useSelector((state) => state.user);
@@ -147,8 +148,18 @@ const App = () => {
                                     )
                                 }
                             />
+                            <Route
+                                path="edit-event/:eventId"
+                                element={
+                                    userDetail?.lastName ? (
+                                        <EditEvents />
+                                    ) : (
+                                        <Navigate to="/users/register" />
+                                    )
+                                }
+                            />
                             <Route path="events" element={<UserEvents />} />
-                            // <Route path="profile" element={<Profile />} />
+                            <Route path="profile" element={<Profile />} />
                             <Route
                                 path="book-events"
                                 element={

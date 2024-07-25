@@ -1,7 +1,6 @@
 import React from "react";
 
 const Decoration = ({ image1, image2, image3 }) => {
-    console.log(image1, image2, image3);
     return (
         <div className="space-y-5">
             <div className="bg-input rounded-[25px]   h-[300px]">

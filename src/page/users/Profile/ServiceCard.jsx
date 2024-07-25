@@ -76,7 +76,7 @@ const EventCard = ({
 
                             {status.toLowerCase() === "booked" && (
                                 <Button>
-                                    <Link to="/users/create-event">
+                                    <Link to={"/users/edit-event/" + eventId}>
                                         Edit Service
                                     </Link>
                                 </Button>
@@ -97,7 +97,7 @@ const EventCard = ({
                                 isPublished && <Button>Published</Button>}
                             {status.toLowerCase() === "rejected" && (
                                 <Button>
-                                    <Link to="/users/create-event">
+                                    <Link to={"/users/edit-event/" + eventId}>
                                         Change Service
                                     </Link>
                                 </Button>
