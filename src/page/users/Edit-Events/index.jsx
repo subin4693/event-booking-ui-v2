@@ -6,8 +6,6 @@ import EventTitle from "./EventTitle";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { Delete, Trash, Trash2 } from "lucide-react";
-
 const EditEvents = () => {
     const [services, setServices] = useState();
     const [selectedService, setSelectedService] = useState(null);
@@ -28,16 +26,6 @@ const EditEvents = () => {
 
     const params = useParams();
     const eventId = params.eventId;
-
-    const deleteField = async () => {
-        let field = selectedService.type.toLowerCase();
-        try {
-            await axios.put(BASE_URL + "/events/edit/" + eventId + "/" + field);
-            navigate("/users/profile");
-        } catch (error) {
-            console.log(error);
-        }
-    };
 
     useEffect(() => {
         if (!tempDate.from || !tempDate.to) {
@@ -238,16 +226,6 @@ const EditEvents = () => {
                 services={services}
                 setSelectedService={setSelectedService}
             />
-            <div className="flex justify-end">
-                <Button
-                    className="mt-10 lg:mt-5"
-                    variant={"destructive"}
-                    onClick={deleteField}
-                    size={"icon"}
-                >
-                    <Trash2 />
-                </Button>
-            </div>
 
             <div className="flex-grow">
                 <ServiceCardContainer
