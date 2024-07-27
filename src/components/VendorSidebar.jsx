@@ -30,15 +30,15 @@ const VendorSidebar = () => {
   };
   return (
     <div className="sticky p-1 sm:p-5  md:px-10 left-0 top-0 bg-muted h-screen border z-10">
-      <h1 className="font-bold text-lg sm:text-2xl">
+      <h1 className="font-bold text-lg sm:text-2xl w-[200px]">
         <span className="hidden sm:inline">Qatar </span>Event Hub
       </h1>
       <div className="h-[80vh]">
-        <Link to="/vendor/register">
+        <Link to="/vendor/update">
           <div className="flex justify-center items-center gap-2 mt-10">
             {client && client?.bestWork ? (
               <img
-                src={client?.bestWork}
+                src={`data:image/jpeg;base64,${client?.bestWork[0]?.data}`}
                 className="w-14 h-14  rounded-full"
                 alt=""
               />

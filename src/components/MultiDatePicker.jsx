@@ -4,46 +4,44 @@ import "react-multi-date-picker/styles/colors/purple.css";
 
 const format = "MM/DD/YYYY";
 
-const DatePickerComponent = ({ setSelectedDate }) => {
-    const [dates, setDates] = useState();
+const DatePickerComponent = ({ date, setSelectedDate }) => {
+  const [dates, setDates] = useState(date);
 
-    const handleDateChange = (selectedDates) => {
-        const isoDates = selectedDates.map((date) =>
-            date.toDate().toISOString()
-        );
-        setDates(selectedDates);
-        setSelectedDate(isoDates);
-    };
+  const handleDateChange = (selectedDates) => {
+    const isoDates = selectedDates.map((date) => date.toDate().toISOString());
+    setDates(selectedDates);
+    setSelectedDate(isoDates);
+  };
 
-    return (
-        <div>
-            &nbsp;&nbsp;<label> Date : </label>
-            <br />
-            <br />
-            <DatePicker
-                value={dates}
-                onChange={handleDateChange}
-                multiple
-                sort
-                format={format}
-                minDate={new Date()}
-                className="purple"
-                inputClass="custom-input"
-                style={{
-                    width: "100%",
-                    boxSizing: "border-box",
-                    height: "26px",
-                    padding: "25px",
-                    borderRadius: "25px",
-                }}
-                containerStyle={{
-                    width: "100%",
-                }}
-                calendarPosition="bottom-center"
-                containerClassName="custom-date-picker-container"
-            />
-            <style>
-                {`
+  return (
+    <div>
+      &nbsp;&nbsp;<label> Date : </label>
+      <br />
+      <br />
+      <DatePicker
+        value={dates}
+        onChange={handleDateChange}
+        multiple
+        sort
+        format={format}
+        minDate={new Date()}
+        className="purple"
+        inputClass="custom-input"
+        style={{
+          width: "100%",
+          boxSizing: "border-box",
+          height: "26px",
+          padding: "25px",
+          borderRadius: "25px",
+        }}
+        containerStyle={{
+          width: "100%",
+        }}
+        calendarPosition="bottom-center"
+        containerClassName="custom-date-picker-container"
+      />
+      <style>
+        {`
            
            :root {
             --rmdp-primary-purple: #80164a;
@@ -118,9 +116,9 @@ const DatePickerComponent = ({ setSelectedDate }) => {
         }
         
         `}
-            </style>
-        </div>
-    );
+      </style>
+    </div>
+  );
 };
 
 export default DatePickerComponent;
