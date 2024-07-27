@@ -68,7 +68,7 @@ const Signup = () => {
             });
 
             dispatch(setUser(res.data.data));
-            if (role.toLowerCase() === "user") navigate("/users/events");
+            if (role.toLowerCase() === "user") navigate("/users/profile");
             else navigate("/vendor");
         } catch (error) {
             toast({

@@ -70,6 +70,7 @@ const ServiceCardContainer = ({
                     singleService={singleService}
                     handleBookings={handleBookings}
                     selectedService={selectedService}
+                    bookings={bookings}
                 />
             </Dialog>
         </div>

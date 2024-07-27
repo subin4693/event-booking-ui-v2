@@ -8,7 +8,12 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 
-const ServiceDetails = ({ singleService, handleBookings, selectedService }) => {
+const ServiceDetails = ({
+    singleService,
+    handleBookings,
+    selectedService,
+    bookings,
+}) => {
     return (
         <DialogContent className="mx -5">
             <div className=" sm:flex w-full gap-10 flex-wrap">
@@ -38,18 +43,33 @@ const ServiceDetails = ({ singleService, handleBookings, selectedService }) => {
 
                     <div className="flex flex-col gap-4  ">
                         <DialogClose asChild>
-                            <Button
-                                type="button"
-                                variant="secondary"
-                                onClick={() =>
-                                    handleBookings(
-                                        selectedService,
-                                        singleService
-                                    )
-                                }
-                            >
-                                Book
-                            </Button>
+                            {bookings?.includes(singleService?._id) ? (
+                                <Button
+                                    type="button"
+                                    variant="secondary"
+                                    onClick={() =>
+                                        handleBookings(
+                                            selectedService,
+                                            singleService
+                                        )
+                                    }
+                                >
+                                    Remove
+                                </Button>
+                            ) : (
+                                <Button
+                                    type="button"
+                                    variant="secondary"
+                                    onClick={() =>
+                                        handleBookings(
+                                            selectedService,
+                                            singleService
+                                        )
+                                    }
+                                >
+                                    Book
+                                </Button>
+                            )}
                         </DialogClose>
                         <DialogClose asChild>
                             <Button type="button" variant="secondary">

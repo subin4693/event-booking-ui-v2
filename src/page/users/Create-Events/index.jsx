@@ -29,8 +29,6 @@ const CreateEvents = () => {
         if (!tempDate.from || !tempDate.to) {
             return;
         }
-        console.log("get runned");
-        console.log(tempDate);
 
         // Create a new Date object from the input, setting the time to midnight in UTC
         function normalizeToUTC(date) {
@@ -55,7 +53,6 @@ const CreateEvents = () => {
         ) {
             dates.push(formatUTCISO(new Date(dt)));
         }
-        console.log(dates);
 
         setDate(dates);
     }, [tempDate]);
@@ -68,30 +65,52 @@ const CreateEvents = () => {
     const [servicesList, setServicesList] = useState([]);
 
     const handleBookings = (serviceType, item) => {
-        setBookings((prev) => [...prev, item._id]);
+        let isRemove = false;
+        setBookings((prev) => {
+            if (prev.includes(item._id)) {
+                let newPrev = prev.filter((book) => book != item._id);
+                isRemove = true;
+                return newPrev;
+            } else {
+                isRemove = false;
 
-        if (serviceType?.type?.toLowerCase() == "venue")
-            setVenue({
-                id: item._id,
-                clientId: item.clientId,
-            });
-        if (serviceType?.type?.toLowerCase() == "catering")
-            setCatering({
-                id: item._id,
-                clientId: item.clientId,
-            });
-        if (serviceType?.type?.toLowerCase() == "photograph")
-            setPhotograph({
-                id: item._id,
-                clientId: item.clientId,
-            });
-        if (serviceType?.type?.toLowerCase() == "decoration")
-            setDecoration({
-                id: item._id,
-                clientId: item.clientId,
-            });
+                return [...prev, item._id];
+            }
+        });
+
+        if (serviceType?.type?.toLowerCase() == "venue") {
+            if (isRemove) setVenue({});
+            else
+                setVenue({
+                    id: item._id,
+                    clientId: item.clientId,
+                });
+        }
+        if (serviceType?.type?.toLowerCase() == "catering") {
+            if (isRemove) setCatering({});
+            else
+                setCatering({
+                    id: item._id,
+                    clientId: item.clientId,
+                });
+        }
+        if (serviceType?.type?.toLowerCase() == "photograph") {
+            if (isRemove) setPhotograph({});
+            else
+                setPhotograph({
+                    id: item._id,
+                    clientId: item.clientId,
+                });
+        }
+        if (serviceType?.type?.toLowerCase() == "decoration") {
+            if (isRemove) setDecoration({});
+            else
+                setDecoration({
+                    id: item._id,
+                    clientId: item.clientId,
+                });
+        }
     };
-
     const handleCreateEvent = async () => {
         try {
             const formData = new FormData();

@@ -99,8 +99,6 @@ const ClientServices = () => {
                 }
             }
 
-            console.log("Edit item");
-
             try {
                 setLoading(true);
                 await axios
@@ -110,7 +108,6 @@ const ClientServices = () => {
                         },
                     })
                     .then((res) => {
-                        console.log(res.data);
                         navigate("/vendor/dashboard");
                     })
                     .catch((err) => console.log(err));
@@ -121,7 +118,7 @@ const ClientServices = () => {
             }
         } else {
             //create data
-            console.log(imageData);
+
             const data = new FormData();
             data.append("images", imageData);
             data.append("typeId", client?.role?._id);
@@ -144,8 +141,6 @@ const ClientServices = () => {
                 );
             }
 
-            console.log("create item");
-
             try {
                 setLoading(true);
                 await axios
@@ -155,7 +150,6 @@ const ClientServices = () => {
                         },
                     })
                     .then((res) => {
-                        console.log(res.data.newItem);
                         dispatch(addItem(res.data.newItem));
 
                         navigate("/vendor/dashboard");

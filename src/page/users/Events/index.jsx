@@ -18,7 +18,7 @@ const Events = () => {
                 setLoading(false);
 
                 const res = await axios.get(BASE_URL + "/events");
-                console.log(res.data);
+
                 setEvents({ Upcoming: res.data.Upcoming, Past: res.data.Past });
             } catch (error) {
                 console.log(error);
