@@ -115,8 +115,6 @@ const EditEvents = () => {
 
     const handleCreateEvent = async () => {
         try {
-            console.log("date");
-            console.log(date);
             const data = {
                 userId: user.id,
                 name: title,
@@ -133,8 +131,6 @@ const EditEvents = () => {
             data.decoration = JSON.stringify(data.decoration);
 
             // date.forEach((d) => formData.append("dates[]", d));
-            console.log(data);
-
             const response = await axios
                 .put(BASE_URL + "/events/edit/" + eventId, data, {
                     headers: {

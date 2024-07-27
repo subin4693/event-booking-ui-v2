@@ -18,9 +18,6 @@ const Topbar = ({ events, setSelectedService }) => {
                                 index === activeIndex && " text-white    "
                             }`}
                             onClick={() => {
-                                {
-                                    console.log(event);
-                                }
                                 setSelectedService(event);
                                 return setActiveIndex(index);
                             }}

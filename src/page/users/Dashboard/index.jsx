@@ -24,7 +24,7 @@ const Dashboard = () => {
             try {
                 setLoading(true);
                 const res = await axios.get(BASE_URL + "/events/published");
-                console.log(res.data);
+
                 setEvents(res.data);
             } catch (error) {
                 console.log(error);
