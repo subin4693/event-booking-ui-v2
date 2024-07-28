@@ -22,6 +22,7 @@ const Events = () => {
     try {
       setConfirmLoading(true);
       const res = await axios.post(BASE_URL + "/events/confirm/" + bookingId);
+      console.log(res);
       setData({ Upcoming: res.data.events });
     } catch (error) {
       console.log(error);
