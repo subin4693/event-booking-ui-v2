@@ -20,7 +20,7 @@ const EventCard = ({
   rejectLoading,
   itemId,
   name,
-  date,
+  // date,
 }) => {
   if (!isOpen) return null;
 
@@ -160,11 +160,11 @@ const EventCard = ({
                 <span className="font-semibold">Status : </span>
                 {status}
               </p>
-              <p>
+              {/* <p>
                 {" "}
                 <span className="font-semibold">Dates : </span>
                 {date}
-              </p>
+              </p> */}
             </div>
           </div>
         </div>
