@@ -6,6 +6,7 @@ import EventTitle from "./EventTitle";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { useToast } from "@/components/ui/use-toast";
 
 const CreateEvents = () => {
     const [services, setServices] = useState();
@@ -22,10 +23,13 @@ const CreateEvents = () => {
     const [photograph, setPhotograph] = useState("");
     const [decoration, setDecoration] = useState("");
 
-    const [date, setDate] = useState(new Date());
+    const [date, setDate] = useState(null);
     const [tempDate, setTempDate] = useState(new Date());
+    const { toast } = useToast();
 
     useEffect(() => {
+        console.log(tempDate);
+        if (!tempDate) return;
         if (!tempDate.from || !tempDate.to) {
             return;
         }
@@ -33,7 +37,7 @@ const CreateEvents = () => {
         // Create a new Date object from the input, setting the time to midnight in UTC
         function normalizeToUTC(date) {
             const utcDate = new Date(
-                Date.UTC(date.getFullYear(), date.getMonth(), date.getDate())
+                Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()),
             );
             return utcDate;
         }
@@ -55,6 +59,15 @@ const CreateEvents = () => {
         }
 
         setDate(dates);
+        toast({
+            title: "Date selected",
+            description:
+                "From : " +
+                dates[0].split("T")[0] +
+                " || " +
+                "To : " +
+                dates[dates.length - 1].split("T")[0],
+        });
     }, [tempDate]);
 
     const { user } = useSelector((state) => state.user);
@@ -145,13 +158,40 @@ const CreateEvents = () => {
             console.error("Error creating event:", error);
         }
     };
+
+    useEffect(() => {
+        const getTypes = async () => {
+            console.log(date);
+            if (!date || !date[0] || !date[date?.length - 1]) return;
+            console.log(
+                BASE_URL +
+                    "/items?start=" +
+                    date[0] +
+                    "&end" +
+                    date[date?.length - 1],
+            );
+            try {
+                const data = await axios.get(
+                    BASE_URL +
+                        "/items?start=" +
+                        date[0] +
+                        "&end=" +
+                        date[date?.length - 1],
+                );
+
+                setServicesList(data.data.items);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        getTypes();
+    }, [date]);
+
     useEffect(() => {
         const getTypes = async () => {
             try {
                 const res = await axios.get(BASE_URL + "/types");
-                const data = await axios.get(BASE_URL + "/items");
 
-                setServicesList(data.data.items);
                 setServices(res.data.types);
 
                 setSelectedService(res.data.types[0]);
