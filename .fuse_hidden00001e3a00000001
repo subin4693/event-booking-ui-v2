@@ -1,0 +1,2 @@
+VITE_BASE_URcd=http://localhost:8081/api/v1
+VITE_BASE_URL=https://event-hub-backend-v2.onrender.com/api/v1

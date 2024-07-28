@@ -22,7 +22,7 @@ const CreateEvents = () => {
     const [photograph, setPhotograph] = useState("");
     const [decoration, setDecoration] = useState("");
 
-    const [date, setDate] = useState(new Date());
+    const [date, setDate] = useState(null);
     const [tempDate, setTempDate] = useState(new Date());
 
     useEffect(() => {
@@ -33,7 +33,7 @@ const CreateEvents = () => {
         // Create a new Date object from the input, setting the time to midnight in UTC
         function normalizeToUTC(date) {
             const utcDate = new Date(
-                Date.UTC(date.getFullYear(), date.getMonth(), date.getDate())
+                Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()),
             );
             return utcDate;
         }
@@ -145,13 +145,40 @@ const CreateEvents = () => {
             console.error("Error creating event:", error);
         }
     };
+
+    useEffect(() => {
+        const getTypes = async () => {
+            console.log(date);
+            if (!date || !date[0] || !date[date?.length - 1]) return;
+            console.log(
+                BASE_URL +
+                    "/items?start=" +
+                    date[0] +
+                    "&end" +
+                    date[date?.length - 1],
+            );
+            try {
+                const data = await axios.get(
+                    BASE_URL +
+                        "/items?start=" +
+                        date[0] +
+                        "&end=" +
+                        date[date?.length - 1],
+                );
+
+                setServicesList(data.data.items);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        getTypes();
+    }, [date]);
+
     useEffect(() => {
         const getTypes = async () => {
             try {
                 const res = await axios.get(BASE_URL + "/types");
-                const data = await axios.get(BASE_URL + "/items");
 
-                setServicesList(data.data.items);
                 setServices(res.data.types);
 
                 setSelectedService(res.data.types[0]);
