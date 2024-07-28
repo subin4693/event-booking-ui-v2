@@ -6,6 +6,7 @@ import EventTitle from "./EventTitle";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
+import { useToast } from "@/components/ui/use-toast";
 const EditEvents = () => {
     const [services, setServices] = useState();
     const [selectedService, setSelectedService] = useState(null);
@@ -23,11 +24,13 @@ const EditEvents = () => {
 
     const [date, setDate] = useState();
     const [tempDate, setTempDate] = useState(new Date());
-
+    const { toast } = useToast();
     const params = useParams();
     const eventId = params.eventId;
 
     useEffect(() => {
+        console.log(tempDate);
+        if (!tempDate) return;
         if (!tempDate.from || !tempDate.to) {
             return;
         }
@@ -35,10 +38,11 @@ const EditEvents = () => {
         // Create a new Date object from the input, setting the time to midnight in UTC
         function normalizeToUTC(date) {
             const utcDate = new Date(
-                Date.UTC(date.getFullYear(), date.getMonth(), date.getDate())
+                Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()),
             );
             return utcDate;
         }
+
         const fromDate = normalizeToUTC(new Date(tempDate.from));
         const toDate = normalizeToUTC(new Date(tempDate.to));
 
@@ -56,6 +60,15 @@ const EditEvents = () => {
         }
 
         setDate(dates);
+        toast({
+            title: "Date selected",
+            description:
+                "From : " +
+                dates[0].split("T")[0] +
+                " || " +
+                "To : " +
+                dates[dates.length - 1].split("T")[0],
+        });
     }, [tempDate]);
 
     const { user } = useSelector((state) => state.user);
@@ -150,12 +163,10 @@ const EditEvents = () => {
         const getData = async () => {
             try {
                 const res = await axios.get(
-                    BASE_URL + "/events/single-event/" + eventId
+                    BASE_URL + "/events/single-event/" + eventId,
                 );
                 const ress = await axios.get(BASE_URL + "/types");
-                const data = await axios.get(BASE_URL + "/items");
 
-                setServicesList(data.data.items);
                 setServices(ress.data.types);
 
                 setSelectedService(ress.data.types[0]);
@@ -201,6 +212,49 @@ const EditEvents = () => {
             }
         };
         getData();
+    }, []);
+
+    useEffect(() => {
+        const getTypes = async () => {
+            console.log(date);
+            if (!date || !date[0] || !date[date?.length - 1]) return;
+            console.log(
+                BASE_URL +
+                    "/items?start=" +
+                    date[0] +
+                    "&end" +
+                    date[date?.length - 1],
+            );
+            try {
+                const data = await axios.get(
+                    BASE_URL +
+                        "/items?start=" +
+                        date[0] +
+                        "&end=" +
+                        date[date?.length - 1],
+                );
+
+                setServicesList(data.data.items);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        getTypes();
+    }, [date]);
+    useEffect(() => {
+        const getTypes = async () => {
+            try {
+                const res = await axios.get(BASE_URL + "/types");
+
+                setServices(res.data.types);
+
+                setSelectedService(res.data.types[0]);
+                // setSelectedService({ _id: 2, type: "df" });
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        getTypes();
     }, []);
 
     return (
