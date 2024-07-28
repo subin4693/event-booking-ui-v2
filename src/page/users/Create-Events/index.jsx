@@ -26,6 +26,8 @@ const CreateEvents = () => {
     const [tempDate, setTempDate] = useState(new Date());
 
     useEffect(() => {
+        console.log(tempDate);
+        if (!tempDate) return;
         if (!tempDate.from || !tempDate.to) {
             return;
         }
