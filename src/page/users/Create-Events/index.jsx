@@ -6,6 +6,7 @@ import EventTitle from "./EventTitle";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { useToast } from "@/components/ui/use-toast";
 
 const CreateEvents = () => {
     const [services, setServices] = useState();
@@ -24,6 +25,7 @@ const CreateEvents = () => {
 
     const [date, setDate] = useState(null);
     const [tempDate, setTempDate] = useState(new Date());
+    const { toast } = useToast();
 
     useEffect(() => {
         console.log(tempDate);
@@ -57,6 +59,15 @@ const CreateEvents = () => {
         }
 
         setDate(dates);
+        toast({
+            title: "Date selected",
+            description:
+                "From : " +
+                dates[0].split("T")[0] +
+                " || " +
+                "To : " +
+                dates[dates.length - 1].split("T")[0],
+        });
     }, [tempDate]);
 
     const { user } = useSelector((state) => state.user);
