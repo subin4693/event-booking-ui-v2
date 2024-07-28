@@ -28,11 +28,11 @@ const Register = () => {
   );
   const [email, setEmail] = useState(user?.email || client?.email || "");
   const [experience, setExperience] = useState(client?.workExperience || "");
-  const [role, setRole] = useState(client?.role?.type || "");
+  const [role, setRole] = useState(client?.role?._id || "");
   const [contact, setContact] = useState(client?.contact || "");
   const [qid, setQid] = useState(client?.qId || "");
   const [crno, setCrno] = useState(client?.crNo || "");
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState([]);
   const [initialImage, setInitialImage] = useState(
     client?.bestWork[0]?.data || null
   );
@@ -45,31 +45,30 @@ const Register = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { toast } = useToast();
-  console.log(date);
   const handleSubmit = async () => {
     const data = new FormData();
 
-    if (client?.firstName !== firstName) data.append("firstName", firstName);
-    if (client?.lastName !== lastName) data.append("lastName", lastName);
-    if (client?.email !== email) data.append("email", email);
-    if (client?.role?.type !== role) data.append("role", role);
-    if (client?.workExperience !== experience)
-      data.append("workExperience", experience);
-    if (client?.location !== location) data.append("location", location);
-    if (client?.contact !== contact) data.append("contact", contact);
-    if (client?.qId !== qid) data.append("qId", qid);
-    if (client?.crNo !== crno) data.append("crNo", crno);
-    if (image) {
+    data.append("firstName", firstName);
+    data.append("lastName", lastName);
+    data.append("email", email);
+    data.append("role", role);
+
+    data.append("workExperience", experience);
+    data.append("location", location);
+    data.append("contact", contact);
+    data.append("qId", qid);
+    data.append("crNo", crno);
+
+    if (image.length) {
       const file = image[0];
       const extension = file.name.split(".").pop();
       const newName = `${uuidv4()}.${extension}`;
       const newImage = new File([file], newName, { type: file.type });
       data.append("bestWork", newImage);
     }
-    if (client?.description !== description)
-      data.append("description", description);
 
-    console.log(date);
+    data.append("description", description);
+
     date.forEach((d) => data.append("availability[]", d));
 
     const nn = firstName + " " + lastName;
@@ -95,7 +94,7 @@ const Register = () => {
           .catch((err) => console.log(err));
       }
 
-      await axios.put(`${BASE_URL}/client/${client?._id}`, data, {
+      await axios.patch(`${BASE_URL}/client/${client?._id}`, data, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

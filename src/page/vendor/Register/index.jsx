@@ -19,10 +19,6 @@ import { setClient } from "@/features/clientSlice";
 
 const Register = () => {
   const { user } = useSelector((state) => state.user);
-  console.log(user.name);
-
-  let name = user.name.split(" ")[1];
-  console.log(name);
 
   const [firstName, setFirstName] = useState(user?.name?.split(" ")[0] || "");
   const [lastName, setLastName] = useState(user?.name?.split(" ")[1] || "");
