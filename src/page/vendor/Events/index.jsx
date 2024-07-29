@@ -1,6 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import React, { useCallback, useEffect, useState } from "react";
 import Topbar from "./Topbar";
 import { useSelector } from "react-redux";
 import axios from "axios";
@@ -12,36 +10,45 @@ const Events = () => {
   const [loading, setLoading] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [rejectLoading, setRejectLoading] = useState(false);
+  const [reload, setReload] = useState(false);
 
   const BASE_URL = import.meta.env.VITE_BASE_URL;
   const [data, setData] = useState({});
 
-  const handleConfirm = async (bookingId, confirmation) => {
-    setConfirmLoading(!confirmLoading);
+  const handleConfirm = useCallback(
+    async (bookingId, confirmation) => {
+      setConfirmLoading(!confirmLoading);
 
-    try {
-      setConfirmLoading(true);
-      const res = await axios.post(BASE_URL + "/events/confirm/" + bookingId);
-      console.log(res);
-      setData({ Upcoming: res.data.events });
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setConfirmLoading(false);
-    }
-  };
-  const handleReject = async (bookingId) => {
-    try {
-      setRejectLoading(true);
-      const res = await axios.post(BASE_URL + "/events/reject/" + bookingId);
+      try {
+        setConfirmLoading(true);
+        const res = await axios.post(BASE_URL + "/events/confirm/" + bookingId);
+        console.log(res);
+        setData({ Upcoming: res.data.events });
+        setReload((prev) => !prev);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setConfirmLoading(false);
+      }
+    },
+    [BASE_URL, confirmLoading]
+  );
+  const handleReject = useCallback(
+    async (bookingId) => {
+      try {
+        setRejectLoading(true);
+        const res = await axios.post(BASE_URL + "/events/reject/" + bookingId);
 
-      setData({ Upcoming: res.data.events });
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setRejectLoading(false);
-    }
-  };
+        setData({ Upcoming: res.data.events });
+        setReload((prev) => !prev);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setRejectLoading(false);
+      }
+    },
+    [BASE_URL]
+  );
 
   useEffect(() => {
     const getEvents = async () => {
@@ -59,7 +66,7 @@ const Events = () => {
     };
 
     getEvents();
-  }, []);
+  }, [client._id, reload, BASE_URL]);
   return (
     <div className="">
       <div className="mt-1">

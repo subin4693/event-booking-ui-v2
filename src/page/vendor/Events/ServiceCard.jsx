@@ -25,10 +25,17 @@ const ServiceCard = ({
 
   const openModal = () => setModalOpen(true);
   const closeModal = () => setModalOpen(false);
-  // const date =
-  //   dates[0].split("T", 1)[0] +
-  //   " --- " +
-  //   dates[dates.length - 1].split("T", 1)[0];
+  const [date, setDate] = useState("");
+
+  useEffect(() => {
+    if (dates) {
+      setDate(
+        dates[0]?.split("T", 1)[0] +
+          " --- " +
+          dates[dates.length - 1]?.split("T", 1)[0]
+      );
+    }
+  }, [dates]);
 
   useEffect(() => {
     if (confirmLoading) {
@@ -83,7 +90,7 @@ const ServiceCard = ({
         rejectLoading={rejectLoading}
         itemId={itemId}
         name={name}
-        // date={date}
+        date={date}
       />
     </>
   );
