@@ -21,7 +21,7 @@ const Dashboard = () => {
         try {
             setPublishLoading(true);
             const res = await axios.post(
-                BASE_URL + "/events/publish/" + eventId
+                BASE_URL + "/events/publish/" + eventId,
             );
 
             setData({ Upcoming: res.data.Upcoming, Past: res.data.Past });
@@ -35,7 +35,7 @@ const Dashboard = () => {
         try {
             setCancelLoading(true);
             const res = await axios.post(
-                BASE_URL + "/events/publish/cancel/" + eventId
+                BASE_URL + "/events/publish/cancel/" + eventId,
             );
             setData({ Upcoming: res.data.Upcoming, Past: res.data.Past });
         } catch (error) {
@@ -72,7 +72,7 @@ const Dashboard = () => {
                             />
                         ) : (
                             <img
-                                src="https://github.com/shadcn.png"
+                                src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
                                 className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                             />
                         )}

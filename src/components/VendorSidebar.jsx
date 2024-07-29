@@ -37,14 +37,15 @@ const VendorSidebar = () => {
         <Link to="/vendor/update">
           <div className="flex justify-center items-center gap-2 mt-10">
             {client && client?.bestWork ? (
-              <img
-                src={`data:image/jpeg;base64,${client?.bestWork[0]?.data}`}
-                className="w-14 h-14  rounded-full"
-                alt=""
-              />
+              <Avatar className="w-14 h-14">
+                <AvatarImage
+                  src={`data:image/jpeg;base64,${client?.bestWork[0]?.data}`}
+                />
+                <AvatarFallback>CN</AvatarFallback>
+              </Avatar>
             ) : (
               <Avatar className="w-14 h-14">
-                <AvatarImage src="https://github.com/shadcn.png" />
+                <AvatarImage src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" />
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
             )}
